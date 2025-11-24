@@ -1,4 +1,5 @@
 name: CI
+
 on:
   push:
     branches:
@@ -6,42 +7,62 @@ on:
     tags: ['*']
   pull_request:
   workflow_dispatch:
+
 concurrency:
   # Skip intermediate builds: always.
   # Cancel intermediate builds: only if it is a pull request build.
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
 jobs:
   test:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
-    permissions: # needed to allow julia-actions/cache to proactively delete old caches that it has created
+
+    # Needed so julia-actions/cache can delete its old caches
+    permissions:
       actions: write
       contents: read
+
+    env:
+      JULIA_NUM_THREADS: ${{ matrix.nthreads }}
+
     strategy:
       fail-fast: false
       matrix:
         version:
-          - '1.10'
-          - '1.12'
-          - 'pre'
+          - '1.12.1'  
         os:
           - ubuntu-latest
         arch:
           - x64
+        nthreads:
+          - 3
+
     steps:
       - uses: actions/checkout@v4
-      - uses: julia-actions/setup-julia@v2
+
+      - uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-      - uses: julia-actions/cache@v2
+
+      - name: Install custom registry
+        run: |
+          julia -e 'import Pkg; Pkg.Registry.add(Pkg.RegistrySpec(url="https://github.com/josePereiro/Pereiro_Registry.jl"))'
+
+      - uses: julia-actions/cache@v1
+
       - uses: julia-actions/julia-buildpkg@v1
+
       - uses: julia-actions/julia-runtest@v1
+
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v4
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: matrix.os == 'ubuntu-latest'
         with:
           files: lcov.info
-          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false

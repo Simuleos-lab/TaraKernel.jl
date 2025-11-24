@@ -1,0 +1,10 @@
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.12.1"
+manifest_format = "2.0"
+project_hash = "bb78a8bbb12c701697c571099c48f41452116a6c"
+
+[[deps.TaraKernel]]
+path = "."
+uuid = "71c599f0-fb9f-429e-b654-e07d545af317"
+version = "1.0.0-DEV"

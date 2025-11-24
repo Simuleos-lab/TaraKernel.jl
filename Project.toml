@@ -1,7 +1,7 @@
 name = "TaraKernel"
 uuid = "71c599f0-fb9f-429e-b654-e07d545af317"
-authors = ["josePereiro <jose.pereiro.personal@gmail.com> and contributors"]
-version = "1.0.0-DEV"
+authors = ["josePereiro <jose.pereiro.lab@gmail.com> and contributors"]
+version = "0.1"
 
 [compat]
 julia = "1.10"

@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Which branch is protected as "main"?
+PROTECTED_BRANCH="main"
+
+# Base branch against which compatibility is checked
+BASE_BRANCH="main"
+
+# Current branch
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+###
+### Try to fetch
+###
+git fetch --all --quiet || {
+  echo "⚠️ Warning: 'git fetch --all' failed, using local refs."
+}
+
+###
+### Forbid commits directly on main
+###
+if [ "$CURRENT_BRANCH" = "$PROTECTED_BRANCH" ]; then
+  echo "❌ Direct commits to '$PROTECTED_BRANCH' are forbidden."
+  echo "   Create a feature branch and commit there, then open a PR."
+  exit 1
+fi
+
+###
+### <<Forbid commits on branches that are not cleanly mergeable into main
+###
+# If main doesn't exist locally (weird repo state), just skip the check
+git fetch --all
+if ! git show-ref --verify --quiet "refs/heads/$BASE_BRANCH"; then
+  # You can uncomment this if you want it to be stricter:
+  echo "⚠️ $BASE_BRANCH does not exist locally; skipping compatibility check."
+  exit 0
+fi
+
+# Optionally prefer origin/main if it exists, otherwise use local main
+BASE_REF="$BASE_BRANCH"
+if git show-ref --verify --quiet "refs/remotes/origin/$BASE_BRANCH"; then
+  BASE_REF="origin/$BASE_BRANCH"
+fi
+
+# Common ancestor between current branch and base
+MERGE_BASE="$(git merge-base HEAD "$BASE_REF")"
+
+# If there is no merge-base (disconnected histories), block the commit
+if [ -z "$MERGE_BASE" ]; then
+  echo "❌ Branch '$CURRENT_BRANCH' has no common ancestor with '$BASE_REF'."
+  echo "   Please rebase or create the branch from '$BASE_BRANCH'."
+  exit 1
+fi
+
+# Use `git merge-tree` to simulate a merge in memory (does NOT touch your working tree).
+# It prints conflict markers (<<<<<<<) if there would be conflicts.
+if git merge-tree "$MERGE_BASE" HEAD "$BASE_REF" | grep -q '^<<<<<<<'; then
+  echo "❌ Your branch '$CURRENT_BRANCH' cannot be cleanly merged into '$BASE_REF'."
+  echo "   Rebase or merge '$BASE_BRANCH' into your branch and resolve conflicts first:"
+  echo "     git fetch origin"
+  echo "     git merge $BASE_REF"
+  echo "   Then commit again."
+  exit 1
+fi
+
+# All good
+exit 0
