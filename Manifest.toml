@@ -2,9 +2,26 @@
 
 julia_version = "1.12.1"
 manifest_format = "2.0"
-project_hash = "bb78a8bbb12c701697c571099c48f41452116a6c"
+project_hash = "50eec24b97045e35055070244f7846af787f45c3"
+
+[[deps.MassExport]]
+deps = ["Reexport"]
+path = "/Users/pereiro/.julia/dev/MassExport"
+uuid = "bdad8087-1bf2-41e1-917c-1d9e34c2a82c"
+version = "1.0.4"
+
+[[deps.OrderedCollections]]
+git-tree-sha1 = "05868e21324cede2207c6f0f466b4bfef6d5e7ee"
+uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+version = "1.8.1"
+
+[[deps.Reexport]]
+git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
+uuid = "189a3867-3050-52da-a836-e630ba90ab69"
+version = "1.2.2"
 
 [[deps.TaraKernel]]
+deps = ["MassExport"]
 path = "."
 uuid = "71c599f0-fb9f-429e-b654-e07d545af317"
-version = "1.0.0-DEV"
+version = "0.1.0"

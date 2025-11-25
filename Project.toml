@@ -1,9 +1,15 @@
 name = "TaraKernel"
 uuid = "71c599f0-fb9f-429e-b654-e07d545af317"
+version = "0.1.0"
 authors = ["josePereiro <jose.pereiro.lab@gmail.com> and contributors"]
-version = "0.1"
+
+[deps]
+MassExport = "bdad8087-1bf2-41e1-917c-1d9e34c2a82c"
+OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 
 [compat]
+MassExport = "1.0.4"
+OrderedCollections = "1.8.1"
 julia = "1.10"
 
 [extras]

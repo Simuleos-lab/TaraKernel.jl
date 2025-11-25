@@ -1,0 +1,30 @@
+{
+    "root.paths": [
+        ".", 
+        "~/University/CODE/ChatGPTAndMe"
+    ], 
+
+    "output.path": "~/Documents/context.md",
+
+    "output.mode": "clipboard-file",
+    
+    "include.files": [
+        "*.jl", 
+        "*.md",
+        "*Project.toml", 
+        "*SourceConcat.json" 
+    ], 
+    "exclude.files": [
+        "_DEPRECATED/**",
+        "_IGNORED/**",
+        "notes/_IGNORED/**",
+        "notes/_DERIVED/**",
+        ".git/**",
+        "dev/**"
+    ], 
+    "include.content": [
+        ""
+    ], 
+
+    "use.gtignore": true
+}

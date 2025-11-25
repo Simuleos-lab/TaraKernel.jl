@@ -42,11 +42,11 @@
 
 # Segment-Level Interpretation
 
-- The kernel treats each segment as containing exactly one canonical TaraSON payload.
-- Segment content must be self-contained and valid as canonical TaraSON.
+- The kernel treats each segment as containing a collection of canonical TaraSON payload.
+- Segment records must be self-contained and valid as canonical TaraSON.
 - No implicit parent/child relationships are permitted at the segment level.
 - The kernel does not infer structure between segments; all relationships must be encoded as data.
-- A Tape is valid if **each segment expands to a valid canonical TaraSON payload** with its corresponding content identifier.
+- A Tape is valid if **each segment expands to a valid canonical TaraSON collection** with its corresponding content identifier.
 
 ---
 
