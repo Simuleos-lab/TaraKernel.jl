@@ -9,7 +9,7 @@
 ---
 
 # CONCEPTUAL MODEL
-- A `LiteTapeSegment` is an **ordered sequence** of `StaticRecord`s.
+- A `LiteTapeSegment` is an **ordered sequence** of `StaticLiteRecord`s.
 - The sequence may contain **zero or more committed prefixes**.
 - Each committed prefix ends with a `CommitRecord`.
 - All records **after** the last `CommitRecord` belong to the `DynamicTail`.
@@ -39,7 +39,7 @@
 
 ## DynamicTail
 - The **uncommitted suffix** following the last `CommitRecord`.
-- Contains only non-commit `StaticRecord`s.
+- Contains only non-commit `StaticLiteRecord`s.
 - Mutable via append operations.
 - Not part of any committed state.
 - Not hashable.
@@ -51,7 +51,7 @@
 # ORDERING INVARIANT
 - The segment is an ordered list:
     ```
-    Segment = [StaticRecord₁, StaticRecord₂, …, StaticRecordₙ]
+    Segment = [StaticLiteRecord₁, StaticLiteRecord₂, …, StaticRecordₙ]
     ```
 - The backend must preserve ordering in all representations.
 - Appends always increase the logical index.
@@ -65,7 +65,7 @@
     - up to and including index `k`.
 - The committed prefix is:
     ```
-    StaticPrefix(k) = [StaticRecord₁ … StaticRecord₍k₋₁₎, CommitRecord_k]
+    StaticPrefix(k) = [StaticLiteRecord₁ … StaticLiteRecord₍k₋₁₎, CommitRecord_k]
     ```
 - The prefix cannot change after commit.
 - The commit record defines the **prefix hash** and associated metadata.
@@ -75,7 +75,7 @@
 
 # DYNAMIC TAIL INVARIANT
 - The `DynamicTail` begins at index `k+1`, where `k` is the last commit index.
-- Contains only `StaticRecord`s.
+- Contains only `StaticLiteRecord`s.
 - Ends when a new `CommitRecord` is appended.
 - Writers may append arbitrarily many records to the tail.
 - Readers ignore the tail unless explicitly requested to read dynamic data.

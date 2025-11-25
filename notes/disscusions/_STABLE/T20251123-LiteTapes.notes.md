@@ -31,7 +31,7 @@
 * Recovery is possible by scanning segments but results in a new Tape identity.
 * Tape identity (UUID) exists independently of segment contents.
 * Meta files describe Tape structure rather than contextual user data.
-* Meta files contain both structural and system information.
+* Meta files contain structural and system information.
 * Meta is needed for fast loading and avoiding full rescans.
 * Meta cannot be fully derived from segments in general.
 * Meta must be considered **authoritative** for the implementation.
@@ -42,7 +42,6 @@
 
 * The LiteTapeLib root contains its own meta file (`litelib.meta.jsonl`).
 * This file defines:
-
   * The LiteTapeLib identity.
   * A list of Tape folders.
   * Their states (active/archived).
@@ -53,7 +52,6 @@
 # **TAPE META CONTENT**
 
 * Tape meta includes:
-
   * Tape ID.
   * Creation time.
   * Format version.
@@ -69,12 +67,11 @@
 
 # **META AS TARASON SYSTEM SEGMENTS**
 
-* TaraSON can express “facts about issues,” including Tape-level definitions.
+* TaraSON can express Tape-level definitions.
 * Meta files can be represented as **reserved TaraSON jsonl segments**.
 * Meta is implemented as a system-level segment (`tape.meta.jsonl`).
 * Meta segment is treated as **segment 0** of a Tape.
 * System namespace types are reserved:
-
   * `LiteTape.Meta`
   * `LiteTape.Segment`
   * `LiteTape.UserMeta`
@@ -101,12 +98,25 @@
 
 # **SEGMENT OPERATIONS**
 
-* Append segment: adds a new static segment to the Tape.
-* Repack segments: produce a new ordered list of segments.
-* Compaction: reduce segments through dedup or compression.
-* Rewriting segment structure updates the meta file accordingly.
-* Repacks yield equivalent Tapes that differ at the storage level but preserve records.
-* Structural operations manipulate Tape meta but preserve Tape-level semantics.
+* **append_segment** — atomic append + meta update.
+* **read_segment** — load and parse.
+* **verify_segment** — validate canonical hash.
+* **iterate_segments** — read in-order.
+
+---
+
+# **TAPE OPERATIONS & EQUIVALENCE**
+
+### **Append-only invariant**
+
+* Only add segments; never modify, delete, reorder.
+
+### **Repack & compaction**
+
+* Repacking generates new segments while preserving canonical payloads and their IDs.
+* Allows dedup, regrouping, compression, or sharding.
+* The result is an **equivalent Tape**.
+* Segment boundaries are an implementation detail, not semantic.
 
 ---
 
@@ -133,13 +143,11 @@
 # **API SEMANTICS**
 
 * Tape exposes:
-
   * `meta(tape)` → read the Tape meta records.
   * `segments(tape)` → iterator over static segments in canonical order.
 * User metadata can be set or updated.
 * Structural fields in meta cannot be arbitrarily set.
 * Structural mutation must go through explicit operations:
-
   * append segment,
   * repack segments,
   * clone tape,
@@ -158,7 +166,6 @@
 * Implementation concerns must not pollute contextual record semantics.
 * Meta is stored externally but in the same representational substrate.
 * Clear separation of:
-
   * system-level records,
   * user-level contextual records.
 * Reserved namespaces prevent collisions.
@@ -177,4 +184,20 @@
 * Equivalent Tapes relate to repacking and immutable segments.
 * API semantics depend on structural constraints expressed in meta.
 * Dirtree layout depends on Tape-level meta’s ability to define structure.
+
+---
+
+# **OUTDATED IDEAS**
+
+* **Implicit assumption of alternative physical layouts (e.g., mixing multiple segment formats).**  
+  Removed because the current TaraKernel model fixes segment structure strictly.
+
+* **Earlier suggestions that dynamic segments might behave as semi-persistent objects.**  
+  Adjusted: dynamic segments are now strictly ephemeral and never part of the formal Tape.
+
+* **Hints that meta might be derivable from segments.**  
+  Updated to reflect that meta is *authoritative* and cannot be reconstructed fully.
+
+* **Any ambiguity about segment types existing as a user-facing model.**  
+  Removed; only static segments are first-class.
 
