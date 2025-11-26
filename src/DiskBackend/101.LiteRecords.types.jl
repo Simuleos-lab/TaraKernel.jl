@@ -3,7 +3,7 @@
 # intentionally has no tape field; 
 # attachment happens only at commit time.
 # that is, they are always unattached objects
-struct DynamicLiteRecord <: Base.AbstractDynamicLiteRecord
+struct DynamicLiteRecord <: AbstractDynamicLiteRecord
     depot::LittleDict{String, Any}
     extras::LittleDict{String, Any}
 end
@@ -13,14 +13,14 @@ end
 struct StaticLiteRecord <: AbstractStaticLiteRecord
     # It can be attached to both
     # Dynamic or Static Segments
-    tape::AbstractLiteTapeSegment
+    tape::AbstractTapeSegment
     depot::LittleDict{String, Any}
     extras::LittleDict{String, Any}
 end
 
 # A record on standard form
 struct CannonicalStaticLiteRecord <: AbstractStaticLiteRecord
-    tape::AbstractLiteTapeSegment
+    tape::AbstractTapeSegment
     depot::LittleDict{String, Any}
     extras::LittleDict{String, Any}
 end

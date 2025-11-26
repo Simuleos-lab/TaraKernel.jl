@@ -1,5 +1,5 @@
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
-## MARK: LiteRecord
+## MARK: Abstract
 
 # Something that behaves like a Tara record”: 
 # - you can at least talk about its canonical payload / hash / basic metadata.
@@ -12,13 +12,3 @@ abstract type AbstractDynamicLiteRecord <: AbstractLiteRecord end
 
 # commited LiteRecord
 abstract type AbstractStaticLiteRecord <: AbstractLiteRecord end
-
-
-# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
-## MARK: LiteTape
-
-abstract type AbstractLiteTapeLib end
-abstract type AbstractLiteTape end
-abstract type AbstractLiteTapeSegment end
-abstract type AbstractStaticLiteTapeSegment <: AbstractLiteTapeSegment end
-abstract type AbstractDynamicLiteTapeSegment <: AbstractLiteTapeSegment end
