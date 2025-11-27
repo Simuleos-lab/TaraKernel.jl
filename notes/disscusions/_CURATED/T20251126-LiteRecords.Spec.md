@@ -1,0 +1,75 @@
+# LiteRecords
+
+- A `LiteRecord` is a Dict like structure
+- Its string representation most be `JSON` compatible
+- Its keys must be strings
+- Additionally, the structure must have `lite` children/values
+    - and object/value is lite as defined at the `LiteSpec`
+
+## LiteSpec
+
+- A data value/object/struct is lite if it can be encoded as:
+    - a single `JSON` literal
+        - scalar, boolean, null
+        - string
+            - limited length
+                - `#OPTIONAL`
+    - arrays
+        - can include only literals
+            - `[1,2,3,4]` is lite
+            - `[1,[2],[3,4]]` is non-lite
+        - type homogeneous
+            - `#OPTIONAL`
+        - limited length
+            - `#OPTIONAL`
+    - nested lite objects (dicts)
+        - can include as children any other lite object
+            - for instance:
+                - `{"A": [1], "B": {"C": 1}, "C": 1}`
+        - limited deep and/or length
+            - `#OPTIONAL`
+- Any implementation of the `TaraKernel` will deside a mapping from runtime, language specific, data types and its JSON lite encoding.
+
+## TaraSON
+
+- An object is coded in `TaraSON` if:
+    - It is JSON compatible
+    - Is itself complaiant of the `LiteSpec`
+
+## Canonical and Free representation
+
+- Any `LiteRecord` must have an string representation
+- This representation can be `Free` or `Canonical`
+- The `CanonicalRep` is defined at [[T20251123-Canonical.Record.Rep.Spec.md]]
+- The `FreeRep` representation is just a non canonical TaraSON object string representation
+- Two objects with different representations
+    - different string representations
+- are "semantically" the same if:
+    - has the same `CanonicalRep`
+
+
+## Runtime
+
+**LiteRecord**
+
+* The minimal structure representing a canonical TaraSON object.
+* LiteRecords contain only lite fields (eg. strings, numbers, booleans, small vectors, small dicts).
+
+**StaticLiteRecord**
+
+- A LiteRecord with a content derived hash.
+    - the hash is stored into the record data
+    - Immutable and always attached/related/linked to a segment.
+    - The only record type exposed when reading from tapes.
+
+**DynamicLiteRecord**
+
+- Only posible at runtime
+- A mutable LiteRecord intended as "stage" object before commiting to a segment.
+- before appended, it is promoted to a StaticLiteRecord.
+- One information flow is: 
+    - DynamicRecord -> StaticRecord -> append -> SegmentTail -> commit
+- The reverse direction
+    - StaticRecord -> DynamicRecord
+        - is forbident  `#OPTIONAL`
+        - or, mark as `unsafe` `#OPTIONAL`

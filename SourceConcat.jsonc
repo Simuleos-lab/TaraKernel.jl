@@ -9,16 +9,19 @@
     "output.mode": "clipboard-file",
     
     "include.files": [
-        "*.jl", 
-        "*.md",
+        "src/**/*.jl", 
         "*Project.toml", 
+        "**/_CURATED/*.md",
         "*SourceConcat.json" 
+        
     ], 
     "exclude.files": [
-        "_DEPRECATED/**",
-        "_IGNORED/**",
-        "notes/_IGNORED/**",
-        "notes/_DERIVED/**",
+        "**/_DEPRECATED/**",
+        // "**/_STAGE/**",
+        // "**/_STABLE/**",
+        // "**/_IGNORED/**",
+        // "**/_DERIVED/**",
+        // "notes.archived/**",
         ".git/**",
         "dev/**"
     ], 

@@ -12,3 +12,10 @@ abstract type AbstractDynamicLiteRecord <: AbstractLiteRecord end
 
 # commited LiteRecord
 abstract type AbstractStaticLiteRecord <: AbstractLiteRecord end
+
+# MARK: depot types
+const AbstractTaraKey = Union{AbstractString, Symbol}
+const AbstractTaraDict = AbstractDict{<:AbstractTaraKey, Any}
+
+const TaraDict = LittleDict{String, Any}
+const CanonicalTaraDict = LittleDict{String, String}
