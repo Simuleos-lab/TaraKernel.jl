@@ -1,59 +1,102 @@
 # Here we will implement the cannonical representation interface
 
+"""
+    jsonpointer(segments::Vector{String}) -> String
 
-# TODO Move to serialization
-# literal_canonstr(x::Nothing) = "null"
-# literal_canonstr(x::Bool) = string(x)
-# literal_canonstr(x::Integer) = string(x)
-# literal_canonstr(x::AbstractFloat) = string(x)
-# literal_canonstr(x::AbstractString) = string(x)
-# literal_canonstr(x::Symbol) = string(x)
+Encode a list of path segments into a JSON-Pointer–style path.
+Applies the RFC-6901 escape rules:
+  '~' becomes '~0'
+  '/' becomes '~1'
+"""
+function jsonpointer(segments::Vector{String})
+    io = IOBuffer()
+    write(io, '/')  # JSON Pointer always starts with '/'
 
-CANONICAL_KEY_SEP = "::"
+    for (i, seg) in enumerate(segments)
+        # Escape per RFC 6901
+        esc_seg = replace(seg, "~" => "~0", "/" => "~1")
+        write(io, esc_seg)
+        if i < length(segments)
+            write(io, '/')   # separator between segments
+        end
+    end
 
-# TODO
-# - finish this
-
-function litekey_canonstr(k) 
-    k = string(k)
-    # escape sep
-    return k
+    return String(take!(io))
 end
 
 # Assume liteness
 
-function _canonize!(
-        data::AbstractDict,
-        canon::TaraDict, 
-        path_vec::Vector{String}
+function _safe_pop!(pathbuff)
+    isempty(pathbuff) || pop!(pathbuff)
+    return nothing
+end
+
+function __flatten_col!(
+        canon::AbstractDict, 
+        data,
+        pathbuff::Vector{String}
     )
 
-    @show path_vec
     for (k, v) in pairs(data)
-        @show k, v
-        ck = litekey_canonstr(k) 
-        push!(path_vec, ck)
-        _canonize!(
-            v,
-            canon, 
-            path_vec
-        )    
+        push!(pathbuff, string(k))
+        __flatten_keys!(canon, v, pathbuff)
+        _safe_pop!(pathbuff) # pop done key
     end
+    return canon
+end
+
+function __flatten_keys!(
+        canon::AbstractDict, 
+        data::AbstractDict,
+        pathbuff::Vector{String}
+    )
+    __flatten_col!(canon, data, pathbuff)
+    return canon
+end
+
+function __flatten_keys!(
+        canon::AbstractDict, 
+        data::AbstractVector,
+        pathbuff::Vector{String}
+    )
+    __flatten_col!(canon, data, pathbuff)
+    return canon
+end
+
+function __flatten_keys!(
+        canon::AbstractDict, 
+        data::Tuple,
+        pathbuff::Vector{String}
+    )
+    __flatten_col!(canon, data, pathbuff)
+    return canon
+end
+
+function __flatten_keys!(
+        canon::AbstractDict, 
+        data::NamedTuple,
+        pathbuff::Vector{String}
+    )
+    __flatten_col!(canon, data, pathbuff)
+    return canon
 end
 
 # leaves
-function _canonize!(
-        data::Any,
-        canon::TaraDict, 
-        path_vec::Vector{String}
+function __flatten_keys!(
+        canon::AbstractDict, 
+        data::Any, # anything else is a leaf
+        pathbuff::Vector{String}
     )
-    path = join(path_vec, CANONICAL_KEY_SEP)
-    pop!(path_vec)
+    path = jsonpointer(pathbuff)
     canon[path] = data
     return canon
 end
 
-function canonize(data::AbstractDict)
-    _canonize!(data, TaraDict(), String[])
-    return canon
+function canonical(
+        data::AbstractDict;
+        canon::AbstractDict = LittleDict{String, Any}(), 
+        pathbuff::Vector{String} = String[]
+    )
+    __flatten_keys!(canon, data, pathbuff)
+    sort!(canon)
 end

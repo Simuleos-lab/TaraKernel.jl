@@ -1,10 +1,44 @@
 # LiteRecords
 
-- A `LiteRecord` is a Dict like structure
-- Its string representation most be `JSON` compatible
-- Its keys must be strings
-- Additionally, the structure must have `lite` children/values
-    - and object/value is lite as defined at the `LiteSpec`
+## Runtime vs Canonical Representation
+
+### Runtime Representation
+
+- Runtime `LiteRecord`s may use **nested LiteSpec structures**:
+  - nested dictionaries,
+  - arrays of primitives,
+  - tuples / NamedTuples,
+  - language-level convenience shapes.
+- Runtime representation might be:
+  - mutable (eg. `DynamicLiteRecord`),
+  - immutable (eg. `StaticLiteRecord`),
+  - flexible,
+  - host-language specific.
+- Runtime objects must satisfy:
+  - `islite(record) == true`,
+  - `canonical(record)` exists and is deterministic.
+
+### Canonical Representation
+
+- A **Canonical Record** is a flat TaraSON object:
+  - a map `canonical_key :: String => primitive :: TaraPrimitive`,
+  - no nested dicts,
+  - no arrays,
+  - no composite structures.
+- Hierarchy and structure are encoded **only in key paths**.
+- The canonical form is:
+  - deterministic,
+  - byte-stable,
+  - independent of runtime shape.
+
+### Invariant
+
+For any runtime record `r`:
+
+`hash(r) = H(serialize(canonical(r)))`
+
+- Two runtime records are canonically equivalent *iff* their canonical byte representations are identical.
+- Runtime shape is never semantically relevant beyond its canonical projection.
 
 ## LiteSpec
 

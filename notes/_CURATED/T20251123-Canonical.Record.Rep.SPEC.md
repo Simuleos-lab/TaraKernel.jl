@@ -22,7 +22,7 @@
 - herarchical info is stored on each pairs
     - reduce corruption risk
     - make easier recoveries
-- fit perfectly with `LitteDict` two vector implementation
+- fit perfectly with `LittleDict` two vector implementation
 - Only `DynamicLiteRecord` will have non canonical depots
 
 
