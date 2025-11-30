@@ -9,10 +9,9 @@
     "output.mode": "clipboard-file",
     
     "include.files": [
-        "src/**/*.jl", 
+        // "src/**/*.jl", 
         "*Project.toml", 
         "**/_CURATED/*.md",
-        "*.spec.md",
         "*SourceConcat.json" 
         
     ], 
@@ -22,6 +21,7 @@
         "**/_STABLE/**",
         "**/_IGNORED/**",
         "**/_DERIVED/**",
+        "**/_ARCHIVED/**",
         // "notes.archived/**",
         ".git/**",
         "dev/**"
