@@ -7,6 +7,7 @@ module Base
     include("102.LiteTapes.types.jl")
     include("200.LiteSpec.islite.jl")
     include("221.LiteRecords.cannonical.repr.jl")
-    include("999.exports.jl")
+    include("222.LiteRecords.hashing.jl")
+    include("900.utils.jl")
     
 end
