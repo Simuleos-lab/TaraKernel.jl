@@ -1,29 +1,5 @@
 # Here we will implement the cannonical representation interface
 
-"""
-    jsonpointer(segments::Vector{String}) -> String
-
-Encode a list of path segments into a JSON-Pointer–style path.
-Applies the RFC-6901 escape rules:
-  '~' becomes '~0'
-  '/' becomes '~1'
-"""
-function jsonpointer(segments::Vector{String})
-    io = IOBuffer()
-    write(io, '/')  # JSON Pointer always starts with '/'
-
-    for (i, seg) in enumerate(segments)
-        # Escape per RFC 6901
-        esc_seg = replace(seg, "~" => "~0", "/" => "~1")
-        write(io, esc_seg)
-        if i < length(segments)
-            write(io, '/')   # separator between segments
-        end
-    end
-
-    return String(take!(io))
-end
-
 # Assume liteness
 
 function _safe_pop!(pathbuff)
@@ -34,10 +10,16 @@ end
 function __flatten_col!(
         canon::AbstractDict, 
         data,
-        pathbuff::Vector{String}
+        pathbuff::Vector{String}, 
+        isvec = false
     )
-
+    if isvec
+        i0 = firstindex(data)
+    end
     for (k, v) in pairs(data)
+        if isvec
+            k = k - i0
+        end
         push!(pathbuff, string(k))
         __flatten_keys!(canon, v, pathbuff)
         _safe_pop!(pathbuff) # pop done key
@@ -50,7 +32,17 @@ function __flatten_keys!(
         data::AbstractDict,
         pathbuff::Vector{String}
     )
-    __flatten_col!(canon, data, pathbuff)
+    __flatten_col!(canon, data, pathbuff, false)
+    return canon
+end
+
+
+function __flatten_keys!(
+        canon::AbstractDict, 
+        data::NamedTuple,
+        pathbuff::Vector{String}
+    )
+    __flatten_col!(canon, data, pathbuff, false)
     return canon
 end
 
@@ -59,7 +51,7 @@ function __flatten_keys!(
         data::AbstractVector,
         pathbuff::Vector{String}
     )
-    __flatten_col!(canon, data, pathbuff)
+    __flatten_col!(canon, data, pathbuff, true)
     return canon
 end
 
@@ -68,18 +60,10 @@ function __flatten_keys!(
         data::Tuple,
         pathbuff::Vector{String}
     )
-    __flatten_col!(canon, data, pathbuff)
+    __flatten_col!(canon, data, pathbuff, true)
     return canon
 end
 
-function __flatten_keys!(
-        canon::AbstractDict, 
-        data::NamedTuple,
-        pathbuff::Vector{String}
-    )
-    __flatten_col!(canon, data, pathbuff)
-    return canon
-end
 
 # leaves
 function __flatten_keys!(
@@ -87,16 +71,27 @@ function __flatten_keys!(
         data::Any, # anything else is a leaf
         pathbuff::Vector{String}
     )
-    path = jsonpointer(pathbuff)
+    islite_literal(data) || error("Non literal leaf found")
+    path = _jsonpointer(pathbuff)
     canon[path] = data
     return canon
 end
 
-function canonical(
-        data::AbstractDict;
-        canon::AbstractDict = LittleDict{String, Any}(), 
+# Do not check liteness
+# Do not check JSON-Pointers
+function _unsafe_canonical_flatdict(
+        data::AbstractDict,
+        canon::AbstractDict = LittleDict{String, Any}();
         pathbuff::Vector{String} = String[]
     )
     __flatten_keys!(canon, data, pathbuff)
     sort!(canon)
+    return canon
+end
+
+# Do not check flatness
+# Do not check liteness
+# Do not check JSON-Pointers
+function _unsafe_canonical_stringify(canon::AbstractDict)
+    return JSON.json(canon)
 end
