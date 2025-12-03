@@ -9,5 +9,6 @@ module Base
     include("221.LiteRecords.cannonical.repr.jl")
     include("222.LiteRecords.hashing.jl")
     include("900.utils.jl")
+    include("901.utils.jsonpointer.jl")
     
 end

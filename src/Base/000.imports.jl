@@ -2,6 +2,8 @@
 
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
 using Random
+import JSON
+import SHA
 
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
 # MARK OrderedCollections

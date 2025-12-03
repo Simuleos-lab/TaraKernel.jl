@@ -9,7 +9,7 @@
     "output.mode": "clipboard-file",
     
     "include.files": [
-        // "src/**/*.jl", 
+        "src/**/*.jl", 
         "*Project.toml", 
         "**/_CURATED/*.md",
         "*SourceConcat.json" 
