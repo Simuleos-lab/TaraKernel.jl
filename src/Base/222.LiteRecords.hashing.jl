@@ -1,8 +1,12 @@
 # Record hashing only dependent on the Record content
 
-# Do not check liteness
-# Do not check flatness
-# Do not check JSON-Pointers 
+# Object correctness assumed
+function _unsafe_record_hash(canon::AbstractDict)
+    str = _unsafe_canonical_stringify(canon)
+    return bytes2hex(SHA.sha256(str))
+end
+
+# Object correctness assumed
 function _unsafe_rehash_record!(canon::AbstractDict)
     
     # delete hash field
@@ -10,7 +14,6 @@ function _unsafe_rehash_record!(canon::AbstractDict)
     delete!(canon, hashkey)
 
     # compute hash
-    str = _unsafe_canonical_stringify(canon)
-    hash = bytes2hex(SHA.sha256(str))
+    hash = _unsafe_record_hash(canon)
     canon[hashkey] = string("sha265:", hash)
 end

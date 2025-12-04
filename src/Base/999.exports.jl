@@ -3,14 +3,14 @@
 # 101
 export AbstractLiteRecord
 export AbstractDynamicLiteRecord
-export AbstractStaticLiteRecord
+export AbstractCanonicalRecord
 export AbstractLiteProfile
 
 # 102
 export AbstractTapeLibrary
 export AbstractLiteTape
 export AbstractTapeSegment
-export AbstractStaticPrefix
-export AbstractDynamicTail
+export AbstractStaticSegPrefix
+export AbstractDynamicSegTail
 export DevNullTapeSegment
 

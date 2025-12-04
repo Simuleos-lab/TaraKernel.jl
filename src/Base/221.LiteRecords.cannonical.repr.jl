@@ -8,7 +8,7 @@ function _safe_pop!(pathbuff)
 end
 
 function __flatten_col!(
-        canon::AbstractDict, 
+        canon::CanonicalTaraDict, 
         data,
         pathbuff::Vector{String}, 
         isvec = false
@@ -27,39 +27,52 @@ function __flatten_col!(
     return canon
 end
 
+function __obj_sentinel!(
+    canon, tag::String, 
+    pathbuff::Vector{String}
+)
+    # TODO/TRIADE think about sentinels
+    path = _jsonpointer(pathbuff)
+    canon[path] = tag
+end
+
 function __flatten_keys!(
-        canon::AbstractDict, 
+        canon::CanonicalTaraDict, 
         data::AbstractDict,
         pathbuff::Vector{String}
     )
+    __obj_sentinel!(canon, "::DICT", pathbuff)
     __flatten_col!(canon, data, pathbuff, false)
     return canon
 end
 
 
 function __flatten_keys!(
-        canon::AbstractDict, 
+        canon::CanonicalTaraDict, 
         data::NamedTuple,
         pathbuff::Vector{String}
     )
+    __obj_sentinel!(canon, "::DICT", pathbuff)
     __flatten_col!(canon, data, pathbuff, false)
     return canon
 end
 
 function __flatten_keys!(
-        canon::AbstractDict, 
+        canon::CanonicalTaraDict, 
         data::AbstractVector,
         pathbuff::Vector{String}
     )
+    __obj_sentinel!(canon, "::ARR", pathbuff)
     __flatten_col!(canon, data, pathbuff, true)
     return canon
 end
 
 function __flatten_keys!(
-        canon::AbstractDict, 
+        canon::CanonicalTaraDict, 
         data::Tuple,
         pathbuff::Vector{String}
     )
+    __obj_sentinel!(canon, "::ARR", pathbuff)
     __flatten_col!(canon, data, pathbuff, true)
     return canon
 end
@@ -67,7 +80,7 @@ end
 
 # leaves
 function __flatten_keys!(
-        canon::AbstractDict, 
+        canon::CanonicalTaraDict, 
         data::Any, # anything else is a leaf
         pathbuff::Vector{String}
     )
@@ -77,21 +90,18 @@ function __flatten_keys!(
     return canon
 end
 
-# Do not check liteness
-# Do not check JSON-Pointers
-function _unsafe_canonical_flatdict(
+# Object correctness assumed
+function _unsafe_canonical_flatdict!(
         data::AbstractDict,
-        canon::AbstractDict = LittleDict{String, Any}();
+        canon::CanonicalTaraDict = CanonicalTaraDict();
         pathbuff::Vector{String} = String[]
     )
-    __flatten_keys!(canon, data, pathbuff)
+    __flatten_col!(canon, data, pathbuff, false)
     sort!(canon)
     return canon
 end
 
-# Do not check flatness
-# Do not check liteness
-# Do not check JSON-Pointers
-function _unsafe_canonical_stringify(canon::AbstractDict)
+# Object correctness assumed
+function _unsafe_canonical_stringify(canon::CanonicalTaraDict)
     return JSON.json(canon)
 end

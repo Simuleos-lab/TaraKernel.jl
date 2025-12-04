@@ -12,32 +12,22 @@ islite_literal(x::Any) = false
 
 # --- MARK: islite
 
-# --- MARK: islite: arrays
+# --- MARK: islite: arrays-like
+islite(c::AbstractArray) = all(islite, values(c))
+islite(c::Tuple) = all(islite, values(c))
 
-# Only literals on arrays
-## lead user toward using key:val pairs
-
-islite(c::AbstractArray) = all(islite_literal, values(c))
-islite(c::NamedTuple) = all(islite_literal, values(c))
-islite(c::Tuple) = all(islite_literal, values(c))
-
-# --- MARK: islite: dict
-
-#### Dicts (JSON-style, stringy keys)
-islite(
-    c::AbstractTaraDict
-) =
-    all(islite, values(c))
+# --- MARK: islite: dict-like
+islite(c::NamedTuple) = all(islite, values(c))
+islite(c::AbstractDict{String, Any}) = all(islite, values(c))
 
 # --- MARK: islite: base
-
 islite(x::Any) = islite_literal(x)
-
 
 # --- MARK: find_nonlite
 ## Find a non-lite value and track its path
+## - mostly for debbuging and pretty error printing
 
-_subpath(::AbstractTaraDict, path, k) = string(path, "[\"", k, "\"]")
+_subpath(::AbstractDict{String, Any}, path, k) = string(path, "[\"", k, "\"]")
 _subpath(::AbstractArray, path, k) = string(path, "[", k, "]")
 _subpath(::Tuple, path, k) = string(path, "(", k, ")")
 _subpath(::NamedTuple, path, k) = string(path, "[", k, "]")
@@ -63,7 +53,7 @@ _find_nonlite(
     __find_nonlite(c, path)
 
 _find_nonlite(
-    c::AbstractTaraDict, 
+    c::AbstractDict{String, Any}, 
     path::AbstractString
 ) = 
     __find_nonlite(c, path)

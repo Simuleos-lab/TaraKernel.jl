@@ -5,15 +5,19 @@
 import ..Base
 
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
+
+const AbstractLiteNode = Base.AbstractLiteNode
+
+# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
 ## MARK: LiteRecord
 
 const AbstractLiteRecord = Base.AbstractLiteRecord
 const AbstractDynamicLiteRecord = Base.AbstractDynamicLiteRecord
-const AbstractStaticLiteRecord = Base.AbstractStaticLiteRecord
+const AbstractCanonicalRecord = Base.AbstractCanonicalRecord
 
 const AbstractLiteProfile = Base.AbstractLiteProfile
 
-const TaraDict = Base.TaraDict
+const DynamicTaraDict = Base.DynamicTaraDict
 const CanonicalTaraDict = Base.CanonicalTaraDict
 
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
@@ -21,7 +25,8 @@ const CanonicalTaraDict = Base.CanonicalTaraDict
 
 const AbstractTapeLibrary = Base.AbstractTapeLibrary
 const AbstractLiteTape = Base.AbstractLiteTape
-# Segment  =  StaticPrefix*  +  DynamicTail
 const AbstractTapeSegment = Base.AbstractTapeSegment
-const AbstractStaticPrefix = Base.AbstractStaticPrefix
-const AbstractDynamicTail = Base.AbstractDynamicTail
+const AbstractStaticSegPrefix = Base.AbstractStaticSegPrefix
+const AbstractDynamicSegTail = Base.AbstractDynamicSegTail
+
+const ensure_lite = Base.ensure_lite

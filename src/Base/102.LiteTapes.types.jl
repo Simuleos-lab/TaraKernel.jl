@@ -1,13 +1,20 @@
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
 ## MARK: Abstract
 
-abstract type AbstractTapeLibrary end
-abstract type AbstractLiteTape end
-# Segment  =  StaticPrefix*  +  DynamicTail
-abstract type AbstractTapeSegment end
-abstract type AbstractStaticPrefix end
-abstract type AbstractDynamicTail end
+abstract type AbstractLiteTape <: AbstractLiteNode end
 
-# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
-# MARK: sentinel 
+abstract type AbstractTapeSegment <: AbstractLiteNode end
+
+abstract type AbstractStaticSegPrefix <: AbstractLiteNode end
+abstract type AbstractDynamicSegTail <: AbstractLiteNode end
+
+# read only, no dynamic part
+abstract type AbstractReservedTape <: AbstractLiteTape end
+
+## --. -.- - .-- .. .- .- -. -. .- .- . .- -.-.-.-
+# MARK: Concretes
+
+struct DevNullLiteTape <: AbstractLiteTape end
+
 struct DevNullTapeSegment <: AbstractTapeSegment end
+
