@@ -1,6 +1,6 @@
 
 # #NOTE
-struct LiteTapeLib <: AbstractTapeLibrary
+struct LiteTapeLib <: TKB.AbstractTapeLibrary
     path::String
-    extras::DynamicTaraDict
+    extras::TKB.DynamicTKDict
 end

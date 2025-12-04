@@ -1,3 +1,15 @@
+
+function _non_implemented_error()
+    ArgumentError(
+        ""
+    )
+end
+
+function _safe_pop!(pathbuff)
+    isempty(pathbuff) || pop!(pathbuff)
+    return nothing
+end
+
 ## .- .- -. -. -.- .- - .- -.- ..- .--. -. -.-.--.-. 
 # MARK: random record
 

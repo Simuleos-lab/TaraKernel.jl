@@ -1,14 +1,9 @@
-# Here we will implement the cannonical representation interface
+# Here we will implement the canonical representation interface
 
 # Assume liteness
 
-function _safe_pop!(pathbuff)
-    isempty(pathbuff) || pop!(pathbuff)
-    return nothing
-end
-
 function __flatten_col!(
-        canon::CanonicalTaraDict, 
+        canon::CanonicalTKDict, 
         data,
         pathbuff::Vector{String}, 
         isvec = false
@@ -32,12 +27,12 @@ function __obj_sentinel!(
     pathbuff::Vector{String}
 )
     # TODO/TRIADE think about sentinels
-    path = _jsonpointer(pathbuff)
+    path = _tk_jsonpointer(pathbuff)
     canon[path] = tag
 end
 
 function __flatten_keys!(
-        canon::CanonicalTaraDict, 
+        canon::CanonicalTKDict, 
         data::AbstractDict,
         pathbuff::Vector{String}
     )
@@ -48,7 +43,7 @@ end
 
 
 function __flatten_keys!(
-        canon::CanonicalTaraDict, 
+        canon::CanonicalTKDict, 
         data::NamedTuple,
         pathbuff::Vector{String}
     )
@@ -58,7 +53,7 @@ function __flatten_keys!(
 end
 
 function __flatten_keys!(
-        canon::CanonicalTaraDict, 
+        canon::CanonicalTKDict, 
         data::AbstractVector,
         pathbuff::Vector{String}
     )
@@ -68,7 +63,7 @@ function __flatten_keys!(
 end
 
 function __flatten_keys!(
-        canon::CanonicalTaraDict, 
+        canon::CanonicalTKDict, 
         data::Tuple,
         pathbuff::Vector{String}
     )
@@ -80,20 +75,21 @@ end
 
 # leaves
 function __flatten_keys!(
-        canon::CanonicalTaraDict, 
+        canon::CanonicalTKDict, 
         data::Any, # anything else is a leaf
         pathbuff::Vector{String}
     )
-    islite_literal(data) || error("Non literal leaf found")
-    path = _jsonpointer(pathbuff)
+    _tk_islite_literal(data) || error("Non literal leaf found")
+    path = _tk_jsonpointer(pathbuff)
     canon[path] = data
     return canon
 end
 
 # Object correctness assumed
-function _unsafe_canonical_flatdict!(
+# MEANING: flat a dict canonicaly
+function _tk_unsafe_canonical_flatdict!(
         data::AbstractDict,
-        canon::CanonicalTaraDict = CanonicalTaraDict();
+        canon::CanonicalTKDict = CanonicalTKDict();
         pathbuff::Vector{String} = String[]
     )
     __flatten_col!(canon, data, pathbuff, false)
@@ -102,6 +98,19 @@ function _unsafe_canonical_flatdict!(
 end
 
 # Object correctness assumed
-function _unsafe_canonical_stringify(canon::CanonicalTaraDict)
-    return JSON.json(canon)
+# Intended for literal (keys, values)
+# like JSON.json("/key")
+_tk_canonical_literal_stringify(x) = JSON.json(x)
+
+# Object correctness assumed
+# MEANING: turn a canonical dict into one JSON line
+function _tk_unsafe_canonical_stringify(canon::CanonicalTKDict)
+    elms = String[]
+    for (k, v) in pairs(canon)
+        k = _tk_canonical_literal_stringify(k)
+        v = _tk_canonical_literal_stringify(v)
+        p = string(k, ":", v)
+        push!(elms, p)
+    end
+    return string("{", join(elms, ","), "}")
 end

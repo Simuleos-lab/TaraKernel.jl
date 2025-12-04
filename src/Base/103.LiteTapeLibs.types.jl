@@ -1,7 +1,7 @@
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
 ## MARK: Abstract
 
-abstract type AbstractTapeLibrary <: AbstractLiteNode end
+abstract type AbstractTapeLibrary <: AbstractTKNode end
 abstract type AbstractTapeLibraryLoc end
 
 ## --. -.- - .-- .. .- .- -. -. .- .- . .- -.-.-.-

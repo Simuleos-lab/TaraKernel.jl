@@ -3,7 +3,7 @@
 _jsonpointer_stringify(x::AbstractString) = string(x)
 _jsonpointer_stringify(x::Integer) = string(x)
 
-function _jsonpointer(
+function _tk_jsonpointer(
         segments::AbstractVector;
         escaped::Vector{String} = String[],
     )

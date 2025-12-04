@@ -1,34 +1,38 @@
-# --- MARK: islite_literal
+# --- MARK: _tk_islite_literal
 
-islite_literal(x::Nothing) = true
-islite_literal(x::Bool) = true
-islite_literal(x::Integer) = true
-islite_literal(x::AbstractFloat) = true
-islite_literal(x::AbstractString) = true
-islite_literal(x::Symbol) = true
+_tk_islite_literal(x::Nothing) = true
+_tk_islite_literal(x::Bool) = true
+_tk_islite_literal(x::Integer) = true
+_tk_islite_literal(x::AbstractFloat) = true
+_tk_islite_literal(x::AbstractString) = true
+_tk_islite_literal(x::Symbol) = true
 
 # base
-islite_literal(x::Any) = false
+_tk_islite_literal(x::Any) = false
 
-# --- MARK: islite
+tk_islite_literal(x) = _tk_islite_literal(x)
 
-# --- MARK: islite: arrays-like
-islite(c::AbstractArray) = all(islite, values(c))
-islite(c::Tuple) = all(islite, values(c))
+# --- MARK: _tk_islite
 
-# --- MARK: islite: dict-like
-islite(c::NamedTuple) = all(islite, values(c))
-islite(c::AbstractDict{String, Any}) = all(islite, values(c))
+# --- MARK: _tk_islite: arrays-like
+_tk_islite(c::AbstractVector) = all(_tk_islite, values(c))
+_tk_islite(c::Tuple) = all(_tk_islite, values(c))
 
-# --- MARK: islite: base
-islite(x::Any) = islite_literal(x)
+# --- MARK: _tk_islite: dict-like
+_tk_islite(c::NamedTuple) = all(_tk_islite, values(c))
+_tk_islite(c::AbstractDict{String, Any}) = all(_tk_islite, values(c))
+
+# --- MARK: _tk_islite: base
+_tk_islite(x::Any) = _tk_islite_literal(x)
+
+tk_islite(x) = _tk_islite(x)
 
 # --- MARK: find_nonlite
 ## Find a non-lite value and track its path
 ## - mostly for debbuging and pretty error printing
 
 _subpath(::AbstractDict{String, Any}, path, k) = string(path, "[\"", k, "\"]")
-_subpath(::AbstractArray, path, k) = string(path, "[", k, "]")
+_subpath(::AbstractVector, path, k) = string(path, "[", k, "]")
 _subpath(::Tuple, path, k) = string(path, "(", k, ")")
 _subpath(::NamedTuple, path, k) = string(path, "[", k, "]")
 
@@ -42,12 +46,12 @@ function __find_nonlite(c, path)
 end
 
 function _find_nonlite(x, path::AbstractString)
-    islite_literal(x) && return nothing
+    _tk_islite_literal(x) && return nothing
     return (path, x)
 end
 
 _find_nonlite(
-    c::AbstractArray, 
+    c::AbstractVector, 
     path::AbstractString
 ) = 
     __find_nonlite(c, path)
@@ -79,10 +83,11 @@ find_nonlite(x, path::AbstractString) = _find_nonlite(x, path)
 
 find_nonlite(x) = find_nonlite(x, "obj")
 
-# --- MARK: ensure_lite
-function ensure_lite(x)
-    islite(x) && return x
+# --- MARK: _tk_ensure_lite
+function _tk_ensure_lite(x)
+    _tk_islite(x) && return x
     
+    # error branch
     ret = find_nonlite(x)
     @assert !isnothing(ret)
     
@@ -90,6 +95,8 @@ function ensure_lite(x)
     T = typeof(x)
     # For debugging, you can also append `, value = $(repr(x))`
     # but that can be very verbose for big objects.
-    msg = "ensure_lite: found non-lite value at:\n $(path)::$(T)"
+    msg = "_tk_ensure_lite: found non-lite value at:\n $(path)::$(T)"
     throw(ArgumentError(msg))
 end
+
+tk_ensure_lite(x) = _tk_ensure_lite(x)

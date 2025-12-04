@@ -1,30 +1,30 @@
 # dataless: a view of the file system
-struct LiteTape <: AbstractLiteTape
-    lib::AbstractTapeLibrary
+struct LiteTape <: TKB.AbstractLiteTape
+    lib::TKB.AbstractTapeLibrary
     name::String                        # the name of the folder
-    extras::DynamicTaraDict
+    extras::TKB.DynamicTKDict
 end
 
 # data depot
-struct TapeSegment <: AbstractTapeSegment
-    tape::AbstractLiteTape
+struct TapeSegment <: TKB.AbstractTapeSegment
+    tape::TKB.AbstractLiteTape
     name::String                        # the name of the folder
     records::Vector{CanonicalRecord}    # runtime objects
-    raw::Vector{CanonicalTaraDict}      # .jsonl file parsed data
-    extras::DynamicTaraDict
+    raw::Vector{TKB.CanonicalTKDict}      # .jsonl file parsed data
+    extras::TKB.DynamicTKDict
 end
 
 # dataless: a view of a segment
-struct StaticSegmentPrefix <: AbstractStaticSegPrefix
-    seg::AbstractTapeSegment
+struct StaticSegmentPrefix <: TKB.AbstractStaticSegPrefix
+    seg::TKB.AbstractTapeSegment
     idx0::Int 
     idx1::Int 
-    extras::DynamicTaraDict
+    extras::TKB.DynamicTKDict
 end
 
 # dataless: a view of a segment
-struct DynamicSegmentTail <: AbstractDynamicSegTail
-    seg::AbstractTapeSegment
+struct DynamicSegmentTail <: TKB.AbstractDynamicSegTail
+    seg::TKB.AbstractTapeSegment
     idx0::Int 
-    extras::DynamicTaraDict
+    extras::TKB.DynamicTKDict
 end

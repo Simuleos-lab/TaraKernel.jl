@@ -3,7 +3,7 @@
 
 # Something that behaves like a Tara record”: 
 # - you can at least talk about its canonical payload / hash / basic metadata.
-abstract type AbstractLiteRecord <: AbstractLiteNode end
+abstract type AbstractLiteRecord <: AbstractTKNode end
 
 # uncommited LiteRecord
 # cleanly separates pre-commit records from stored ones.

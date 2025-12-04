@@ -4,7 +4,7 @@
 export AbstractLiteRecord
 export AbstractDynamicLiteRecord
 export AbstractCanonicalRecord
-export AbstractLiteProfile
+export AbstractTKProfile
 
 # 102
 export AbstractTapeLibrary

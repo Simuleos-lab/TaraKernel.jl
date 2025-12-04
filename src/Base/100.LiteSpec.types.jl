@@ -1,27 +1,27 @@
 ## --. -.- - .-- .. .- .- -. -. .- .- . .- -.-.-.-
 # MARK: Abstracts
-abstract type AbstractLiteNode end
+abstract type AbstractTKNode end
 
-abstract type AbstractLiteProfile end
+abstract type AbstractTKProfile end
 
 # #ARCH
 # - liteness is not enforced using the Type system
 # - this is just for helping type stability
 
-const AbstractTaraPrimitive = Union{
+const TaraSONPrimitive = Union{
     Nothing, Bool, Int64, Float64, String, Symbol
 }
 
 # A locator spec is an object containig all necessary
 # to locate an object
-abstract type AbstractLocatorSpec end
+abstract type AbstractTKLocatorSpec end
 
 ## --. -.- - .-- .. .- .- -. -. .- .- . .- -.-.-.-
 # MARK: Concretes
 
 # MARK: LiteProfile
-struct DefaultLiteProfile <: AbstractLiteProfile end
-const DynamicTaraDict = LittleDict{String, Any}
+struct DefaultTKProfile <: AbstractTKProfile end
+const DynamicTKDict = LittleDict{String, Any}
 
 # TaraSON == CanonicalRecord representation
 # - you can explait that
@@ -29,6 +29,6 @@ const DynamicTaraDict = LittleDict{String, Any}
 # - dict is flat
 # - but the number of pairs can be large
 # - #TODO find the best data structure
-const CanonicalTaraDict = LittleDict{String, AbstractTaraPrimitive}
+const CanonicalTKDict = LittleDict{String, TaraSONPrimitive}
 
 
