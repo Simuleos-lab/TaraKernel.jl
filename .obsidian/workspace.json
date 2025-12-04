@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notes/_BLOCKS/T20251123-The.Tara.Kernel.Model.BLOCKS.md",
+                "file": "notes/_BLOCKS/T20251126-LiteRecords.BLOCKS.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "T20251123-The.Tara.Kernel.Model.BLOCKS"
+              "title": "T20251126-LiteRecords.BLOCKS"
             }
           },
           {
@@ -92,7 +92,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 373.5
+    "width": 376.5
   },
   "right": {
     "id": "611c9a49e529beef",
@@ -201,18 +201,19 @@
   "lastOpenFiles": [
     "notes/_BLOCKS/T20251201-Canonical.Record.Rep.BLOCKS.md",
     "notes/_BLOCKS/T20251129-Notes.Blocks.Protocol.BLOCKS.md",
+    "notes/_CURATED/T20251129-context-philosophy.ASSAY.md",
+    "notes/_BLOCKS/T20251126-LiteRecords.BLOCKS.md",
+    "notes/_CURATED/T20251126-LiteRecords.SPEC.md",
     "notes/_BLOCKS/T20251123-The.Tara.Kernel.Model.BLOCKS.md",
     "notes/_CURATED/T20251123-The.Tara.Kernel.Model.ARCHIVE.md",
     "notes/_CURATED/T20251123-Canonical.Record.Rep.REWRITING.md",
     "notes/_CURATED/T20251121-DiskBackend.LiteTapes.TOSPLIT.md",
     "notes/_CURATED/T20251129-runtime.vs.backend.ARCH.md",
     "notes/_CURATED/T20251129-kernel.Merkle.tree.ASSAY.md",
-    "notes/_CURATED/T20251129-context-philosophy.ASSAY.md",
     "notes/_CURATED/T20251127-why.the.kernel.is.like.it.is.ASSAY.md",
     "notes/_CURATED/T20251129-context-and-issue-model.TEMP.md",
     "notes/_CURATED/T20251127-TaraSON.all.flat.model.STAGE.md",
     "notes/_CURATED/T20251126-LiteTapeSegments.SPEC.md",
-    "notes/_CURATED/T20251126-LiteRecords.SPEC.md",
     "T20251123-Canonical.Record.Rep.Spec.md",
     "notes/_CURATED/T20251123-The.Tara.Kernel.Model.SPEC.md",
     "notes/_CURATED/T20251123-Canonical.Record.Rep.BLOCKS.md",
