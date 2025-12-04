@@ -21,7 +21,7 @@
 ### Canonical Representation
 
 - A **Canonical Record** is a flat TaraSON object:
-  - a map `canonical_key :: String => primitive :: TaraPrimitive`,
+  - a map `canonical_key :: String => primitive :: AbstractTaraPrimitive`,
   - no nested dicts,
   - no arrays,
   - no composite structures.

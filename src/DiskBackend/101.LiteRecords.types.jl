@@ -3,24 +3,21 @@
 # intentionally has no tape field; 
 # attachment happens only at commit time.
 # that is, they are always unattached objects
-struct DynamicLiteRecord <: AbstractDynamicLiteRecord
-    depot::TaraDict
-    extras::TaraDict
+struct DynamicLiteRecord <: TKB.AbstractDynamicLiteRecord
+    depot::TKB.DynamicTKDict
+    extras::TKB.DynamicTKDict
 end
 
 # read only lite record
 # TODO: Add optional validation and copying own data
-struct StaticLiteRecord <: AbstractStaticLiteRecord
-    # It can be attached to both
-    # Dynamic or Static Segments
-    tape::AbstractTapeSegment
-    depot::TaraDict
-    extras::TaraDict
+struct CanonicalRecord <: TKB.AbstractCanonicalRecord
+    seg::TKB.AbstractTapeSegment
+    idx::Int
+    extras::TKB.DynamicTKDict
 end
 
-# A record on standard form
-struct CannonicalStaticLiteRecord <: AbstractStaticLiteRecord
-    tape::AbstractTapeSegment
-    depot::TaraDict
-    extras::TaraDict
+struct CommitRecord <: TKB.AbstractCanonicalRecord
+    seg::TKB.AbstractTapeSegment
+    idx::Int
+    extras::TKB.DynamicTKDict
 end
