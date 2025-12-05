@@ -27,7 +27,6 @@ Below is a **full rewrite of `Canonical.Record.Rep.SPEC` into protocol-compliant
 Each block is written to stand alone.
 
 ---
-
 ## Canonical Record: Definition
 
 - #LAW
@@ -36,7 +35,6 @@ Each block is written to stand alone.
 - A canonical record exists only as a representation rule, not as a runtime object.
 
 ---
-
 ## Canonical Record: Flatness Requirement
 
 - #LAW
@@ -45,7 +43,6 @@ Each block is written to stand alone.
 - All entries exist at one level in a single mapping.
 
 ---
-
 ## Canonical Record: Permitted Key Types
 
 - #LAW
@@ -54,7 +51,6 @@ Each block is written to stand alone.
 - The keys are valid `JSON-Pointer`s
 
 ---
-
 ## Canonical Record: Permitted Value Types
 
 - #LAW
@@ -68,7 +64,6 @@ Each block is written to stand alone.
 - No objects, lists, maps, or composites are allowed explicitly.
 
 ---
-
 ## Canonical Record: Prohibition of Structured Values
 
 - #LAW
@@ -81,7 +76,6 @@ Each block is written to stand alone.
     - inline composites
 
 ---
-
 ## Canonical Record: Encoding Structure in Key Names
 
 - #MODEL
@@ -93,7 +87,6 @@ Each block is written to stand alone.
 - The key must be a valid `JSON-Pointer`
 
 ---
-
 ## Canonical Record: Hierarchy Is Conceptual, Not Structural
 
 - #INSIGHT
@@ -102,7 +95,6 @@ Each block is written to stand alone.
 - No inference is made from syntax alone: the system does not parse hierarchy — it preserves identity only.
 
 ---
-
 ## Canonical Record: Determinism Requirement
 
 - #LAW
@@ -111,7 +103,6 @@ Each block is written to stand alone.
 - No runtime-dependent ordering, formatting, or allocation is permitted.
 
 ---
-
 ## Canonical Record: Lexicographic Key Ordering
 
 - #LAW
@@ -120,7 +111,6 @@ Each block is written to stand alone.
 - only lexicographically order
 
 ---
-
 ## Canonical Record: Hash Basis
 
 - #LAW
@@ -130,7 +120,6 @@ Each block is written to stand alone.
 - Commit hashing does not inspect runtime representation
 
 ---
-
 ## Canonical Record: Equivalence
 
 - #LAW
@@ -141,7 +130,6 @@ Each block is written to stand alone.
 - No tolerance, coercion, or semantic interpretation exists.
 
 ---
-
 ## Canonical Record:Canonicalization Responsibility
 
 - #MODEL
@@ -150,7 +138,6 @@ Each block is written to stand alone.
 - The canonical layer performs no inference or repair.
 
 ---
-
 ## Canonical Record: Canonical View versus Runtime Structures
 
 - #MODEL
@@ -163,7 +150,6 @@ Each block is written to stand alone.
     - metadata
 
 ---
-
 ## Canonical Record: Canonical Scope
 
 - #LAW
@@ -175,8 +161,7 @@ Each block is written to stand alone.
 - It does not govern internal runtime organization.
 
 ---
-
-## Serialization Distinction
+## Canonical Record: Serialization Distinction
 
 #MODEL
 
@@ -186,8 +171,7 @@ Each block is written to stand alone.
 - Serialization does not define canonical meaning.
 
 ---
-
-## Non-Goals of Canonical Records
+## Canonical Record: Non-Goals of Canonical Records
 
 #INSIGHT
 
@@ -202,7 +186,18 @@ Canonical records do NOT aim to:
 Only identity matters.
 
 ---
+# Canonical Record: Canonical View
 
+#LAW 
+- A canonical view is always a **single flat TaraSON map**.
+- Any representation that is not flat must be converted to the canonical flattened form before hashing or exchanging.
+- The canonical view is used for:
+    - hashing,
+    - replication,
+    - deduplication,
+    - Tape-level semantic equivalence checks.
+
+---
 ## Deprecated: Nested Canonical Structures
 
 #DEPRECATED
@@ -214,7 +209,6 @@ This is no longer permitted.
 All structure MUST be flattened.
 
 ---
-
 ## Deprecated: Lists as Canonical Values
 
 #DEPRECATED
@@ -226,7 +220,6 @@ Lists are not canonical.
 All list semantics MUST be encoded explicitly in keys.
 
 ---
-
 ## Deprecated: Structural Hashing
 
 #DEPRECATED
@@ -236,13 +229,11 @@ Hashing based on nested object structure is forbidden.
 Only flattened key–value form is hashable.
 
 ---
-
 ## Forward Compatibility Rule
 
 #LAW
 
 Future extensions MUST:
-
 * preserve flatness
 * preserve key–value determinism
 * preserve byte-level identity
@@ -256,6 +247,8 @@ If you want, I can next:
 * split this into **one-idea-per-block files**, or
 * align it explicitly with *LiteRecords* / *LiteTapeSegments* / *Kernel Model*, or
 * turn deprecated blocks into a historical note cluster.
+
+
 
 #DEV
 
