@@ -55,6 +55,9 @@
 - Direct overwriting workflows are never supported.
 
 ## StaticLiteRecord
+- A StaticLiteRecord is, by definition, a **Committed** LiteRecord:
+    - it satisfies canonicality and content-integrity invariants,
+    - its identity is fixed by its content-derived hash.
 - An **immutable** record.
 - Contains validated, flat, deterministic TaraSON content.
 - May reference its `LiteTapeSegment` and the `StaticPrefix` it belongs to.

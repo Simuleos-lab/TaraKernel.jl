@@ -260,11 +260,6 @@ If you want, I can next:
 * align it explicitly with *LiteRecords* / *LiteTapeSegments* / *Kernel Model*, or
 * turn deprecated blocks into a historical note cluster.
 
-
-
-
-
-
 #DEV
 
 ***

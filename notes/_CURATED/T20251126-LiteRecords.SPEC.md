@@ -4,9 +4,10 @@
 
 ### Runtime Representation
 
+- `#NEED/REFRESH`
 - Runtime `LiteRecord`s may use **nested LiteSpec structures**:
   - nested dictionaries,
-  - arrays of primitives,
+  - arrays,
   - tuples / NamedTuples,
   - language-level convenience shapes.
 - Runtime representation might be:
@@ -15,13 +16,13 @@
   - flexible,
   - host-language specific.
 - Runtime objects must satisfy:
-  - `islite(record) == true`,
+  - `tk_islite(record) == true`,
   - `canonical(record)` exists and is deterministic.
 
 ### Canonical Representation
 
-- A **Canonical Record** is a flat TaraSON object:
-  - a map `canonical_key :: String => primitive :: AbstractTaraPrimitive`,
+- A **Canonical Record** is a flat `TaraSON` object:
+  - a map `jsonpointer_key :: String => primitive :: AbstractTaraPrimitive`,
   - no nested dicts,
   - no arrays,
   - no composite structures.
@@ -40,29 +41,41 @@ For any runtime record `r`:
 - Two runtime records are canonically equivalent *iff* their canonical byte representations are identical.
 - Runtime shape is never semantically relevant beyond its canonical projection.
 
+---
+
 ## LiteSpec
 
-- A data value/object/struct is lite if it can be encoded as:
-    - a single `JSON` literal
-        - scalar, boolean, null
-        - string
-            - limited length
-                - `#OPTIONAL`
-    - arrays
-        - can include only literals
-            - `[1,2,3,4]` is lite
-            - `[1,[2],[3,4]]` is non-lite
-        - type homogeneous
-            - `#OPTIONAL`
-        - limited length
-            - `#OPTIONAL`
-    - nested lite objects (dicts)
-        - can include as children any other lite object
-            - for instance:
-                - `{"A": [1], "B": {"C": 1}, "C": 1}`
-        - limited deep and/or length
-            - `#OPTIONAL`
-- Any implementation of the `TaraKernel` will deside a mapping from runtime, language specific, data types and its JSON lite encoding.
+* A data value/object/struct is lite if it can be encoded as:
+* a single `JSON` literal
+    * scalar, boolean, null
+    * string
+        * limited length
+            * `#OPTIONAL`
+* arrays
+    * **default (strict) rule**:
+        * `#CURRENT`
+        * can include only literals
+        * `[1,2,3,4]` is lite
+        * `[1,[2],[3,4]]` is non-lite
+    * **recursive rule**:
+        * `#EXPERIMENTAL`
+        * arrays MAY include other lite arrays or lite dicts
+        * `[1,[2],[3,4]]` becomes lite under this rule
+    * type homogeneous
+        * `#OPTIONAL`
+    * limited length
+        * `#OPTIONAL`
+* nested lite objects (dicts)
+    * can include as children any other lite object
+        * for instance:
+        * `{"A": [1], "B": {"C": 1}, "C": 1}`
+    * limited deep and/or length
+        * `#OPTIONAL`
+* Any implementation of `TaraKernel` will decide a mapping from
+  runtime, language-specific data types to its lite encoding.
+
+
+---
 
 ## TaraSON
 

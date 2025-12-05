@@ -1,4 +1,32 @@
 # ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
+#= 
+- DynamicRecord
+    - Lite:         yes
+    - Runtime:      yes
+    - Dynamic:      yes
+    - Static:       no
+    - Committed:    no
+    - Canonical:    any
+    - Attached:     no
+- CanonicalRecord
+    - Lite:         yes
+    - Runtime:      yes
+    - Dynamic:      yes
+    - Static:       no
+    - Committed:    no
+    - Canonical:    yes
+    - Attached:     no
+- CommittedRecord
+    - Lite:         yes
+    - Runtime:      yes
+    - Dynamic:      no
+    - Static:       yes 
+    - Committed:    yes
+    - Canonical:    yes
+    - Attached:     yes
+=#
+
+# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
 ## MARK: Abstract
 
 # Something that behaves like a Tara record”: 
