@@ -1,8 +1,6 @@
-# LiteRecords
 
-## Runtime vs Canonical Representation
-
-### Runtime Representation
+---
+## LiteRecords: Runtime Representation
 
 - Runtime `LiteRecord`s may use **nested LiteSpec structures**:
   - nested dictionaries,
@@ -18,7 +16,8 @@
   - `islite(record) == true`,
   - `canonical(record)` exists and is deterministic.
 
-### Canonical Representation
+---
+## LiteRecords: Canonical Representation
 
 - A **Canonical Record** is a flat TaraSON object:
   - a map `canonical_key :: String => primitive :: TaraPrimitive`,
@@ -31,7 +30,8 @@
   - byte-stable,
   - independent of runtime shape.
 
-### Invariant
+---
+## LiteRecords: Invariant
 
 For any runtime record `r`:
 
@@ -40,7 +40,8 @@ For any runtime record `r`:
 - Two runtime records are canonically equivalent *iff* their canonical byte representations are identical.
 - Runtime shape is never semantically relevant beyond its canonical projection.
 
-## LiteSpec
+---
+## LiteRecords: LiteSpec
 
 - A data value/object/struct is lite if it can be encoded as:
     - a single `JSON` literal
@@ -64,13 +65,15 @@ For any runtime record `r`:
             - `#OPTIONAL`
 - Any implementation of the `TaraKernel` will deside a mapping from runtime, language specific, data types and its JSON lite encoding.
 
-## TaraSON
+---
+## LiteRecords: TaraSON
 
 - An object is coded in `TaraSON` if:
     - It is JSON compatible
-    - Is itself complaiant of the `LiteSpec`
+    - Is itself compliant of the `LiteSpec`
 
-## Canonical and Free representation
+---
+## LiteRecords: Canonical and Free representation
 
 - Any `LiteRecord` must have an string representation
 - This representation can be `Free` or `Canonical`
@@ -81,8 +84,8 @@ For any runtime record `r`:
 - are "semantically" the same if:
     - has the same `CanonicalRep`
 
-
-## Runtime
+---
+## LiteRecords: Runtime Records
 
 **LiteRecord**
 
@@ -107,3 +110,5 @@ For any runtime record `r`:
     - StaticRecord -> DynamicRecord
         - is forbident  `#OPTIONAL`
         - or, mark as `unsafe` `#OPTIONAL`
+
+---
