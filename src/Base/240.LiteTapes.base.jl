@@ -1,6 +1,10 @@
 # HERE: what all tapes must do
 
 # .-.--..-.--.-.-..--.-.-.-..-- - -.- -.- .- -
+# MARK: Segments
+# TODO: make its own file
+
+# .-.--..-.--.-.-..--.-.-.-..-- - -.- -.- .- -
 # MARK: TaraKernel Base 
 
 # canonize record
@@ -16,4 +20,4 @@ function tk_commit_record!(
 end
 
 # .-.--..-.--.-.-..--.-.-.-..-- - -.- -.- .- -
-# MARK: Julia Base
+# MARK: Julia Core.Base-like array

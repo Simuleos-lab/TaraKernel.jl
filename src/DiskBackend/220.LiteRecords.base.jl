@@ -1,3 +1,7 @@
+# TODO
+# - Move to Base
+# - This do not depend on storage
+
 ## - . .--. .- .--.-.- .--. - .- .- -.. -.-
 # MARK: Constructor
 

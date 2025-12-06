@@ -1,4 +1,4 @@
-# Why Context Exists
+## Why Context Exists
 
 - Context is for meaning preservation.
 - Issue is for data preservation.
