@@ -8,7 +8,7 @@ log.txt
 *log.txt
 .vscode
 k.db
-SourceConcat.jsonc
+SourceConcat.json*
 .obsidian
 
 # Created by https://www.toptal.com/developers/gitignore/api/linux,windows,macos,visualstudiocode,julia,python,git
