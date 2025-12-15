@@ -1,56 +1,66 @@
-## Context and Issue
-- #MODEL
-- Both are a conceptual classification.
-- It is not a description of a protocol or an implementation.
+***
+# Context and Issue
 
----
+- This is a conceptual classification/formalization
+- It is not a description of any protocol or implementation
 
-## Concept: Context Record
-- **Type**: Concept
-- A Context is a **lite** record describing an `Issue`.
-- This is one of the interpretation of `TaraSON` records
-- They are use for codifiying contextual data
-- **Rules**
+***
+## Context: Definition
+
+- A Context is a **lite** metadata record describing an Issue.
 - A Context MUST:
-    - #LAW
     - contain only lite data,
-    - be serializable in a stable representation,
+    - be serializable as in a stable representation,
     - remain human-readable and machine-indexable.
-- A `Context` MUST NOT:
-    - #LAW
-    - contain heavy blobs,
-        - large arrays or serialized structs
-- #NOTE
-    - If data prevents the `Context` from being lite, it cannot be included.
+- A Context MUST NOT:
+    - contain heavy blobs
+        - If data prevents it from being lite, it can't be included.
+        - that is, contain non-lite structures.
 
----
+***
+## Context: Issue
 
-## Concept: Issue
-- An Issue represents some recorded or observed entity, for example:
+- An Issue represents an observed artifact:
     - simulation state,
     - recorded event,
     - stored dataset,
     - any unit of work or state worth describing.
-### Rules
-    - #MODEL
-    - An Issue codificaion MAY contain:
-        - non-lite data,
-        - binary blobs,
-        - external files,
-        - domain-specific objects.
+- An Issue MAY contain:
+    - non-lite data
+    - binary blobs
+    - external files,
+    - domain-specific objects.
 
----
+***
+## Context: Relationship
 
-## Concept: Context Issue Relation
-- ### Rules
-    - #LAW
-    - A Context describes an Issue.
-- #LAW
-- An Issue MAY be represented entirely by its Context
-    - *if and only if* all information is lite.
-- #MODEL
+- A Context describes an Issue.
+- An Issue MAY use its Context as its entirety if all information is lite.
 - Otherwise:
     - the Context contains references to non-lite data,
-    - the Issue owns or points to the actual data.
+    - the Issue owns or points to those blobs.
 
----
+***
+
+## Context: Why Context Exists
+
+- Context is for meaning preservation.
+- Issue is for data preservation.
+- They solve different time scales:
+  - Issue handles storage.
+  - Context handles understanding.
+
+- Context ignores:
+  - motivation,
+  - intention,
+  - rationale.
+- Context preserves:
+  - conditions,
+  - parameters,
+  - observations,
+  - environment description.
+
+Context is what allows future you
+to understand past you.
+
+***
