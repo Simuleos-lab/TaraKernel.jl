@@ -37,8 +37,8 @@ let
 
     @show dyn
     
-    # # cannonize
-    # # - return a `CanonicalRecord`
+    # cannonize
+    # - return a `CanonicalRecord`
     # can = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
     
     # # Serialize to TaraSON

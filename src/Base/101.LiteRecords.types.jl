@@ -48,7 +48,7 @@ abstract type AbstractCanonicalRecord <: AbstractLiteRecord end
 struct DevNullRecord end
 
 export LiteRecord
-Base.@kwdef struct LiteRecord <: AbstractLiteRecord
+Base.@kwdef struct LiteRecord <: AbstractDynamicLiteRecord
     data::Union{Nothing, Dict{String, Union{Nothing, Bool, Integer, AbstractString, AbstractFloat, Symbol}}} = nothing
     metadata::Union{Nothing, String} = nothing
 end

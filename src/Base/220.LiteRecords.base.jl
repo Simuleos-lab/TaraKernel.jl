@@ -14,7 +14,7 @@ function tk_lite_record(raw::AbstractDict)::LiteRecord
     )
 
     for (k, v) in pairs(raw)
-        push!(literec.data, k => v)
+        tk_setindex!(literec, k, v)
     end
 
     return literec
@@ -24,60 +24,60 @@ end
 # MARK: Julia Core.Base-like dict
 
 tk_setindex!(
-    ::AbstractDynamicLiteRecord, 
+    rec::AbstractDynamicLiteRecord, 
     val::Any, 
-    ::String
+    key::String
 ) = 
-    error("Non implemented")
+    push!(rec.data, key => val)
 
     # read access
 tk_getindex(
-    ::AbstractDynamicLiteRecord,
-    ::String,
+    rec::AbstractDynamicLiteRecord,
+    key::String,
 ) =
-    error("Non implemented")
+    return rec.data[key]
 
 tk_haskey(
-    ::AbstractDynamicLiteRecord,
-    ::String,
+    rec::AbstractDynamicLiteRecord,
+    key::String,
 ) =
-    error("Non implemented")
+    haskey(rec.data, key)
 
 # bulk views
 tk_keys(
-    ::AbstractDynamicLiteRecord,
+    rec::AbstractDynamicLiteRecord,
 ) =
-    error("Non implemented")
+    return keys(rec.data)
 
 tk_values(
-    ::AbstractDynamicLiteRecord,
+    rec::AbstractDynamicLiteRecord,
 ) =
-    error("Non implemented")
+    return values(rec.data)
 
 tk_pairs(
-    ::AbstractDynamicLiteRecord,
+    rec::AbstractDynamicLiteRecord,
 ) =
-    error("Non implemented")
+    return pairs(rec.data)
 
 # size / emptiness
 tk_length(
-    ::AbstractDynamicLiteRecord,
+    rec::AbstractDynamicLiteRecord,
 ) =
-    error("Non implemented")
+    return length(rec.data)
 
 tk_isempty(
-    ::AbstractDynamicLiteRecord,
+    rec::AbstractDynamicLiteRecord,
 ) =
-    error("Non implemented")
+    return isempty(rec.data)
 
 # mutation
 tk_delete!(
-    ::AbstractDynamicLiteRecord,
-    ::String,
+    rec::AbstractDynamicLiteRecord,
+    key::String,
 ) =
-    error("Non implemented")
+    delete!(rec.data, key)
 
 tk_empty!(
-    ::AbstractDynamicLiteRecord,
+    rec::AbstractDynamicLiteRecord,
 ) =
-    error("Non implemented")
+    empty!(rec.data)
