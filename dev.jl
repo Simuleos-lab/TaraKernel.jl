@@ -1,5 +1,6 @@
 @time begin
     using TaraKernel
+    using JSON
 end
 
 ## .- .-.- .- -. -.-- -.- -.---- .- ..- -. .-.-
@@ -29,17 +30,22 @@ let
         "B" => "I know I can play Bembe"
     )
 
+    raw_nonlite = Dict{String, Any}(
+        "A" => 1, 
+        "B" => [1,2,3]
+    )
+
     # Move to TaraKernel type
     # - validate liteness
     # - should return a `LiteRecord`
     # - This is already read only
     dyn = tk_lite_record(raw::AbstractDict)::LiteRecord
 
-    @show dyn
+    # @show dyn
     
     # cannonize
     # - return a `CanonicalRecord`
-    # can = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
+    can = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
     
     # # Serialize to TaraSON
     # # - return a TaraSONRecord

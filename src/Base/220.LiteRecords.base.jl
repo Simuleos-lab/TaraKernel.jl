@@ -81,3 +81,9 @@ tk_empty!(
     rec::AbstractDynamicLiteRecord,
 ) =
     empty!(rec.data)
+
+# sorting
+tk_sort!(
+    rec::AbstractDynamicLiteRecord
+) = 
+    sort!(rec.data)

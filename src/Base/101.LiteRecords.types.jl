@@ -52,3 +52,9 @@ Base.@kwdef struct LiteRecord <: AbstractDynamicLiteRecord
     data::Union{Nothing, Dict{String, Union{Nothing, Bool, Integer, AbstractString, AbstractFloat, Symbol}}} = nothing
     metadata::Union{Nothing, String} = nothing
 end
+
+export CanonicalRecord
+Base.@kwdef struct CanonicalRecord <: AbstractDynamicLiteRecord
+    data::Union{Nothing, Dict{String, Union{Nothing, Bool, Integer, AbstractString, AbstractFloat, Symbol}}} = nothing
+    metadata::Union{Nothing, String} = nothing
+end
