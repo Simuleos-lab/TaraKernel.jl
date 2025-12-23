@@ -14,18 +14,18 @@ tk_islite_literal(x) = _tk_islite_literal(x)
 
 # --- MARK: _tk_islite
 
-# --- MARK: _tk_islite: arrays-like
-_tk_islite(c::AbstractVector) = all(_tk_islite, values(c))
-_tk_islite(c::Tuple) = all(_tk_islite, values(c))
+# --- MARK: _tk_islite: arrays-like. n is maximum recursion depth
+_tk_islite(c::AbstractVector, n::Int=1) = n == 0 ? _tk_islite_literal(c) : all(c -> _tk_islite(c, n - 1), values(c))
+_tk_islite(c::Tuple, n::Int=1) = n == 0 ? _tk_islite_literal(c) : all(c -> _tk_islite(c, n - 1), values(c))
 
 # --- MARK: _tk_islite: dict-like
-_tk_islite(c::NamedTuple) = all(_tk_islite, values(c))
-_tk_islite(c::AbstractDict{String, Any}) = all(_tk_islite, values(c))
+_tk_islite(c::NamedTuple, n::Int=1) = n == 0 ? _tk_islite_literal(c) : all(c -> _tk_islite(c, n - 1), values(c))
+_tk_islite(c::AbstractDict{String, Any}, n::Int=1) = n == 0 ? _tk_islite_literal(c) : all(c -> _tk_islite(c, n - 1), values(c))
 
 # --- MARK: _tk_islite: base
-_tk_islite(x::Any) = _tk_islite_literal(x)
+_tk_islite(x::Any, ::Int) = _tk_islite_literal(x)
 
-tk_islite(x) = _tk_islite(x)
+tk_islite(x, n) = _tk_islite(x, n)
 
 # --- MARK: find_nonlite
 ## Find a non-lite value and track its path

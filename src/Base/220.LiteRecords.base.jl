@@ -1,21 +1,18 @@
 # HERE: what all records must do
 
 # - validate liteness
-# - should return a `LiteRecord`
+# - should return an immutable `LiteRecord`
 # - This is already read only
 export tk_lite_record
 function tk_lite_record(raw::AbstractDict)::LiteRecord
     
-    tk_ensure_lite(raw)
+    raw_copy = deepcopy(raw)
+    tk_ensure_lite(raw_copy)
 
     literec = LiteRecord(
-        data = Dict();
-        metadata = ""
+        data = raw_copy;
+        metadata = Dict()
     )
-
-    for (k, v) in pairs(raw)
-        tk_setindex!(literec, k, v)
-    end
 
     return literec
 end
@@ -24,66 +21,66 @@ end
 # MARK: Julia Core.Base-like dict
 
 tk_setindex!(
-    rec::AbstractDynamicLiteRecord, 
-    val::Any, 
-    key::String
+    rec::LiteRecord, 
+    key::String,
+    val::Any
 ) = 
-    push!(rec.data, key => val)
+    error("Not implemented")
 
-    # read access
+# read access
 tk_getindex(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
     key::String,
 ) =
     return rec.data[key]
 
 tk_haskey(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
     key::String,
 ) =
     haskey(rec.data, key)
 
 # bulk views
 tk_keys(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
     return keys(rec.data)
 
 tk_values(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
     return values(rec.data)
 
 tk_pairs(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
     return pairs(rec.data)
 
 # size / emptiness
 tk_length(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
     return length(rec.data)
 
 tk_isempty(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
     return isempty(rec.data)
 
 # mutation
 tk_delete!(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
     key::String,
 ) =
     delete!(rec.data, key)
 
 tk_empty!(
-    rec::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
     empty!(rec.data)
 
 # sorting
 tk_sort!(
-    rec::AbstractDynamicLiteRecord
+    rec::LiteRecord
 ) = 
     sort!(rec.data)

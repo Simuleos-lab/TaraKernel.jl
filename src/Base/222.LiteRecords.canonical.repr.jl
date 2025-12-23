@@ -3,7 +3,7 @@
 # Assume liteness
 
 function __flatten_col!(
-        canon::CanonicalRecord, 
+        canon::CanonicalTKDict, 
         data,
         pathbuff::Vector{String}, 
         isvec = false
@@ -32,7 +32,7 @@ function __obj_sentinel!(
 end
 
 function __flatten_keys!(
-        canon::CanonicalRecord, 
+        canon::CanonicalTKDict, 
         data::AbstractDict,
         pathbuff::Vector{String}
     )
@@ -43,7 +43,7 @@ end
 
 
 function __flatten_keys!(
-        canon::CanonicalRecord, 
+        canon::CanonicalTKDict, 
         data::NamedTuple,
         pathbuff::Vector{String}
     )
@@ -53,7 +53,7 @@ function __flatten_keys!(
 end
 
 function __flatten_keys!(
-        canon::CanonicalRecord, 
+        canon::CanonicalTKDict, 
         data::AbstractVector,
         pathbuff::Vector{String}
     )
@@ -63,7 +63,7 @@ function __flatten_keys!(
 end
 
 function __flatten_keys!(
-        canon::CanonicalRecord, 
+        canon::CanonicalTKDict, 
         data::Tuple,
         pathbuff::Vector{String}
     )
@@ -75,30 +75,41 @@ end
 
 # leaves
 function __flatten_keys!(
-        canon::CanonicalRecord, 
+        canon::CanonicalTKDict, 
         data::Any, # anything else is a leaf
         pathbuff::Vector{String}
     )
     _tk_islite_literal(data) || error("Non literal leaf found")
     path = _tk_jsonpointer(pathbuff)
-    canon.data[path] = data
+    canon[path] = data
     return canon
 end
 
 # Object correctness assumed
 # MEANING: flat a dict canonicaly
 function _tk_unsafe_canonical_flatdict(
-        data::AbstractDict,
-        canon::CanonicalRecord = CanonicalRecord();
+        literec::LiteRecord,
+        canon::CanonicalTKDict;
         pathbuff::Vector{String} = String[]
     )
-    __flatten_col!(canon, data, pathbuff, false)
-    tk_sort!(canon)
+    __flatten_col!(canon, literec.data, pathbuff, false)
+    sort!(canon)
     return canon
 end
 
 export tk_canonical_record
-tk_canonical_record(data) = _tk_unsafe_canonical_flatdict(data)
+function tk_canonical_record(literec::LiteRecord)
+
+    canon = LittleDict{String, TaraSONPrimitive}()
+    flattened_data = _tk_unsafe_canonical_flatdict(literec, canon)
+
+    canon_record = CanonicalRecord(
+        data = flattened_data,
+        metadata = Dict()
+    )
+
+    return canon_record
+end
 
 # Object correctness assumed
 # Intended for literal (keys, values)
@@ -107,7 +118,7 @@ _tk_canonical_literal_stringify(x) = JSON.json(x)
 
 # Object correctness assumed
 # MEANING: turn a canonical dict into one JSON line
-function _tk_unsafe_canonical_stringify(canon::CanonicalRecord)
+function _tk_unsafe_canonical_stringify(canon::CanonicalTKDict)
     elms = String[]
     for (k, v) in pairs(canon)
         k = _tk_canonical_literal_stringify(k)

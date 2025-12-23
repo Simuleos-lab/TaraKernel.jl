@@ -49,12 +49,12 @@ struct DevNullRecord end
 
 export LiteRecord
 Base.@kwdef struct LiteRecord <: AbstractDynamicLiteRecord
-    data::Union{Nothing, Dict{String, Union{Nothing, Bool, Integer, AbstractString, AbstractFloat, Symbol}}} = nothing
-    metadata::Union{Nothing, String} = nothing
+    data::Union{Nothing, Any} = nothing
+    metadata::Union{Nothing, Dict{String, Any}} = nothing
 end
 
 export CanonicalRecord
 Base.@kwdef struct CanonicalRecord <: AbstractDynamicLiteRecord
-    data::Union{Nothing, Dict{String, Union{Nothing, Bool, Integer, AbstractString, AbstractFloat, Symbol}}} = nothing
-    metadata::Union{Nothing, String} = nothing
+    data::Union{Nothing, Dict{String, Union{Nothing, TaraSONPrimitive}}} = nothing
+    metadata::Union{Nothing, Dict{String, Union{Nothing, TaraSONPrimitive}}} = nothing
 end

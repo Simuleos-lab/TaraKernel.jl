@@ -41,7 +41,7 @@ let
     # - This is already read only
     dyn = tk_lite_record(raw::AbstractDict)::LiteRecord
 
-    # @show dyn
+    @show dyn
     
     # cannonize
     # - return a `CanonicalRecord`
