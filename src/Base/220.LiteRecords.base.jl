@@ -4,14 +4,16 @@
 # - should return an immutable `LiteRecord`
 # - This is already read only
 export tk_lite_record
-function tk_lite_record(raw::AbstractDict)::LiteRecord
+function tk_lite_record(raw::AbstractDict, max_depth::Int=1)::LiteRecord
     
     raw_copy = deepcopy(raw)
-    tk_ensure_lite(raw_copy)
+    tk_ensure_lite(raw_copy, max_depth)
 
     literec = LiteRecord(
-        data = raw_copy;
-        metadata = Dict()
+        data = raw_copy,
+        metadata = Dict(
+            "max_depth" => max_depth
+        )
     )
 
     return literec

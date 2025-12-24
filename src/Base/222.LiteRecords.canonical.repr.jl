@@ -28,7 +28,7 @@ function __obj_sentinel!(
 )
     # TODO/TRIADE think about sentinels
     path = _tk_jsonpointer(pathbuff)
-    canon.data[path] = tag
+    canon[path] = tag
 end
 
 function __flatten_keys!(

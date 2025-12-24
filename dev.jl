@@ -30,7 +30,7 @@ let
         "B" => "I know I can play Bembe"
     )
 
-    raw_nonlite = Dict{String, Any}(
+    raw2 = Dict{String, Any}(
         "A" => 1, 
         "B" => [1,2,3]
     )
@@ -39,7 +39,7 @@ let
     # - validate liteness
     # - should return a `LiteRecord`
     # - This is already read only
-    dyn = tk_lite_record(raw::AbstractDict)::LiteRecord
+    dyn = tk_lite_record(raw2, 2)::LiteRecord
 
     @show dyn
     
@@ -48,6 +48,7 @@ let
     can = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
     
     # # Serialize to TaraSON
+
     # # - return a TaraSONRecord
     # #   - just a wrapper around a TaraSON string
     # #   - NOTE: compute parsed object just on demand
