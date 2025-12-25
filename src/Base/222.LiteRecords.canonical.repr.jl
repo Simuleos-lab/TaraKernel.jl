@@ -87,14 +87,28 @@ end
 
 # Object correctness assumed
 # MEANING: flat a dict canonicaly
-function _tk_unsafe_canonical_flatdict!(
-        data::AbstractDict,
-        canon::CanonicalTKDict = CanonicalTKDict();
+function _tk_unsafe_canonical_flatdict(
+        literec::LiteRecord,
+        canon::CanonicalTKDict;
         pathbuff::Vector{String} = String[]
     )
-    __flatten_col!(canon, data, pathbuff, false)
+    __flatten_col!(canon, literec.data, pathbuff, false)
     sort!(canon)
     return canon
+end
+
+export tk_canonical_record
+function tk_canonical_record(literec::LiteRecord)
+
+    canon = LittleDict{String, TaraSONPrimitive}()
+    flattened_data = _tk_unsafe_canonical_flatdict(literec, canon)
+
+    canon_record = CanonicalRecord(
+        data = flattened_data,
+        metadata = Dict()
+    )
+
+    return canon_record
 end
 
 # Object correctness assumed

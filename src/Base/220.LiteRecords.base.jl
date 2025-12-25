@@ -1,63 +1,88 @@
 # HERE: what all records must do
 
+# - validate liteness
+# - should return an immutable `LiteRecord`
+# - This is already read only
+export tk_lite_record
+function tk_lite_record(raw::AbstractDict, max_depth::Int=1)::LiteRecord
+    
+    raw_copy = deepcopy(raw)
+    tk_ensure_lite(raw_copy, max_depth)
+
+    literec = LiteRecord(
+        data = raw_copy,
+        metadata = Dict(
+            "max_depth" => max_depth
+        )
+    )
+
+    return literec
+end
+
 ## ..-- -. -.- -. -.-. - - -.- - -. - .-.- -
 # MARK: Julia Core.Base-like dict
 
 tk_setindex!(
-    ::AbstractDynamicLiteRecord, 
-    val::Any, 
-    ::String
+    rec::LiteRecord, 
+    key::String,
+    val::Any
 ) = 
-    error("Non implemented")
+    error("Not implemented")
 
-    # read access
+# read access
 tk_getindex(
-    ::AbstractDynamicLiteRecord,
-    ::String,
+    rec::LiteRecord,
+    key::String,
 ) =
-    error("Non implemented")
+    return rec.data[key]
 
 tk_haskey(
-    ::AbstractDynamicLiteRecord,
-    ::String,
+    rec::LiteRecord,
+    key::String,
 ) =
-    error("Non implemented")
+    haskey(rec.data, key)
 
 # bulk views
 tk_keys(
-    ::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
-    error("Non implemented")
+    return keys(rec.data)
 
 tk_values(
-    ::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
-    error("Non implemented")
+    return values(rec.data)
 
 tk_pairs(
-    ::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
-    error("Non implemented")
+    return pairs(rec.data)
 
 # size / emptiness
 tk_length(
-    ::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
-    error("Non implemented")
+    return length(rec.data)
 
 tk_isempty(
-    ::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
-    error("Non implemented")
+    return isempty(rec.data)
 
 # mutation
 tk_delete!(
-    ::AbstractDynamicLiteRecord,
-    ::String,
+    rec::LiteRecord,
+    key::String,
 ) =
-    error("Non implemented")
+    delete!(rec.data, key)
 
 tk_empty!(
-    ::AbstractDynamicLiteRecord,
+    rec::LiteRecord,
 ) =
-    error("Non implemented")
+    empty!(rec.data)
+
+# sorting
+tk_sort!(
+    rec::LiteRecord
+) = 
+    sort!(rec.data)
