@@ -13,7 +13,7 @@
 # record data must be copied
 function tk_commit_record!(
     seg::AbstractTapeSegment, 
-    dym::AbstractDynamicLiteRecord;
+    dym::AbstractTaraRecord;
     kwargs...
 )
     error("Non implemented")

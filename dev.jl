@@ -35,20 +35,27 @@ let
         "B" => [1,2,3]
     )
 
+    raw3 = Dict{String, Any}(
+        "A" => 1, 
+        "B" => Dict{String, Any}(
+            "A" => 1, 
+            "B" => [1,2,3]
+        )
+    )
+
     # Move to TaraKernel type
     # - validate liteness
     # - should return a `LiteRecord`
     # - This is already read only
-    dyn = tk_lite_record(raw2, 2)::LiteRecord
+    dyn = tk_lite_record(raw3, 3)::LiteRecord
 
-    @show dyn
-    
     # cannonize
     # - return a `CanonicalRecord`
-    can = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
+    canon = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
     
-    # # Serialize to TaraSON
+    println(JSON.json(canon; pretty=true))
 
+    # # Serialize to TaraSON
     # # - return a TaraSONRecord
     # #   - just a wrapper around a TaraSON string
     # #   - NOTE: compute parsed object just on demand

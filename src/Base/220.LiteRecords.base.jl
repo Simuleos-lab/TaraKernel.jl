@@ -10,10 +10,7 @@ function tk_lite_record(raw::AbstractDict, max_depth::Int=1)::LiteRecord
     tk_ensure_lite(raw_copy, max_depth)
 
     literec = LiteRecord(
-        data = raw_copy,
-        metadata = Dict(
-            "max_depth" => max_depth
-        )
+        raw_copy
     )
 
     return literec

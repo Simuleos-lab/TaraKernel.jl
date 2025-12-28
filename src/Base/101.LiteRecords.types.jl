@@ -35,12 +35,12 @@ abstract type AbstractLiteRecord <: AbstractTKNode end
 
 # uncommited LiteRecord
 # cleanly separates pre-commit records from stored ones.
-# Lets you write APIs like commit!(::AbstractDynamicLiteRecord, tape) 
-# while refusing AbstractCanonicalRecord by construction.
-abstract type AbstractDynamicLiteRecord <: AbstractLiteRecord end
+# Lets you write APIs like commit!(::AbstractTaraRecord, tape) 
+# while refusing AbstractCanonicalTaraRecord by construction.
+abstract type AbstractTaraRecord <: AbstractLiteRecord end
 
 # commited LiteRecord
-abstract type AbstractCanonicalRecord <: AbstractLiteRecord end
+abstract type AbstractCanonicalTaraRecord <: AbstractLiteRecord end
 
 ## --. -.- - .-- .. .- .- -. -. .- .- . .- -.-.-.-
 # MARK: Concretes
@@ -48,13 +48,11 @@ abstract type AbstractCanonicalRecord <: AbstractLiteRecord end
 struct DevNullRecord end
 
 export LiteRecord
-Base.@kwdef struct LiteRecord <: AbstractDynamicLiteRecord
-    data::Union{Nothing, Any} = nothing
-    metadata::Union{Nothing, Dict{String, Any}} = nothing
+struct LiteRecord <: AbstractTaraRecord
+    data::Union{Nothing, Dict{String, Any}}
 end
 
 export CanonicalRecord
-Base.@kwdef struct CanonicalRecord <: AbstractDynamicLiteRecord
-    data::Union{Nothing, Dict{String, Union{Nothing, TaraSONPrimitive}}} = nothing
-    metadata::Union{Nothing, Dict{String, Union{Nothing, TaraSONPrimitive}}} = nothing
+struct CanonicalRecord <: AbstractCanonicalTaraRecord
+    data::Union{Nothing, SortedDict{String, Union{Nothing, TaraSONPrimitive}}}
 end

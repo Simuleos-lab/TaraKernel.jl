@@ -9,4 +9,9 @@ import SHA
 # MARK OrderedCollections
 import OrderedCollections
 
+# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
+# MARK DataStructures
+import DataStructures
+
 const LittleDict = OrderedCollections.LittleDict
+const SortedDict = DataStructures.SortedDict

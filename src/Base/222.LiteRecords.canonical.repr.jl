@@ -93,7 +93,6 @@ function _tk_unsafe_canonical_flatdict(
         pathbuff::Vector{String} = String[]
     )
     __flatten_col!(canon, literec.data, pathbuff, false)
-    sort!(canon)
     return canon
 end
 
@@ -104,10 +103,10 @@ function tk_canonical_record(literec::LiteRecord)
     flattened_data = _tk_unsafe_canonical_flatdict(literec, canon)
 
     canon_record = CanonicalRecord(
-        data = flattened_data,
-        metadata = Dict()
+        flattened_data
     )
 
+    println(canon_record.data)
     return canon_record
 end
 
