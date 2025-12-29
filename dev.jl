@@ -47,7 +47,7 @@ let
     # - validate liteness
     # - should return a `LiteRecord`
     # - This is already read only
-    dyn = tk_lite_record(raw3, 3)::LiteRecord
+    dyn = tk_lite_record(raw3)::LiteRecord
 
     # cannonize
     # - return a `CanonicalRecord`
