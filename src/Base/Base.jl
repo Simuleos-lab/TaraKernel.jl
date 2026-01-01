@@ -24,12 +24,13 @@ module Base
     include("220.LiteRecords.base.jl")
     include("221.LiteRecords.hashing.jl")
     include("222.LiteRecords.canonical.repr.jl")
+    include("223.LiteRecords.parsing.jl")
     include("240.LiteTapes.base.jl")
     include("241.LiteTapes.hashing.jl")
     include("242.LiteTapes.canonical.repr.jl")
     include("260.LiteTapeLibs.base.jl")
     include("900.utils.jl")
     include("901.utils.jsonpointer.jl")
-    include("999.exports.jl")
+    # include("999.exports.jl")
 
 end

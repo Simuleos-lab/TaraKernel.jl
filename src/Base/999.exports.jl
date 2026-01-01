@@ -14,3 +14,11 @@ export AbstractStaticSegPrefix
 export AbstractDynamicSegTail
 export DevNullTapeSegment
 
+### LiteRecord
+
+export LiteRecord
+export CanonicalRecord
+export TaraSONRecord
+export tk_lite_record
+export tk_canonical_record
+export tk_tarason

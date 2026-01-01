@@ -39,8 +39,11 @@ abstract type AbstractLiteRecord <: AbstractTKNode end
 # while refusing AbstractCanonicalTaraRecord by construction.
 abstract type AbstractTaraRecord <: AbstractLiteRecord end
 
-# commited LiteRecord
+# canonical LiteRecord
 abstract type AbstractCanonicalTaraRecord <: AbstractLiteRecord end
+
+# parsed canonical LiteRecord
+abstract type AbstractTaraSONRecord <: AbstractLiteRecord end
 
 ## --. -.- - .-- .. .- .- -. -. .- .- . .- -.-.-.-
 # MARK: Concretes
@@ -49,10 +52,15 @@ struct DevNullRecord end
 
 export LiteRecord
 struct LiteRecord <: AbstractTaraRecord
-    data::Union{Nothing, Dict{String, Any}}
+    data::Dict{String, Any}
 end
 
 export CanonicalRecord
 struct CanonicalRecord <: AbstractCanonicalTaraRecord
-    data::Union{Nothing, SortedDict{String, Union{Nothing, TaraSONPrimitive}}}
+    data::SortedDict{String, Union{Nothing, TaraSONPrimitive}}
+end
+
+export TaraSONRecord
+struct TaraSONRecord <: AbstractTaraSONRecord
+    data::String
 end
