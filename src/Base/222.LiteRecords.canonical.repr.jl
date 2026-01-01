@@ -1,5 +1,8 @@
 # Here we will implement the canonical representation interface
 
+# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
+# MARK: Canonical
+
 # Assume liteness
 
 function __flatten_col!(
@@ -103,6 +106,10 @@ function tk_canonical_record(literec::LiteRecord)
     canon = LittleDict{String, TaraSONPrimitive}()
     flattened_data = _tk_unsafe_canonical_flatdict(literec, canon)
 
+    if !haskey(flattened_data, "content_hash")
+        push!(flattened_data, "content_hash" => "")
+    end
+
     canon_record = CanonicalRecord(
         flattened_data
     )
@@ -126,4 +133,20 @@ function _tk_unsafe_canonical_stringify(canon::CanonicalTKDict)
         push!(elms, p)
     end
     return string("{", join(elms, ","), "}")
+end
+
+# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
+# MARK: Masked
+
+# Canonical record assumed
+export tk_masked_record
+function tk_masked_record(canonical::CanonicalRecord)
+
+    canonical.data["content_hash"] = ""
+
+    masked_record = MaskedCanonicalRecord(
+        canonical.data
+    )
+
+    return masked_record
 end

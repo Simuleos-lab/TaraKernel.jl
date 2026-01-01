@@ -54,18 +54,19 @@ let
     canon = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
     
     # println(JSON.json(canon; pretty=true))
-
+    
+    # masked TaraSON
+    # - return a MaskedCanonicalRecord
+    #   - just a wrapper around a TaraSON string
+    masked = tk_masked_record(canon::CanonicalRecord)::MaskedCanonicalRecord
+    
     # Serialize to TaraSON
     # - return a TaraSONRecord
     #   - just a wrapper around a TaraSON string
     #   - NOTE: compute parsed object just on demand
-    tarason = tk_tarason(canon::CanonicalRecord)::TaraSONRecord
-    println(tarason)
-
-    # # masked TaraSON
-    # # - return a MaskedTaraSON
-    # #   - just a wrapper around a TaraSON string
-    # masked = tk_masked_tarason(tarason::TaraSONRecord)::MaskedTaraSON
+    tarason = tk_tarason(masked::MaskedCanonicalRecord)::TaraSONRecord
+    
+    println(tarason.data)
     
     # # hashed TaraSON
     # # - compute the hash of the masked TaraSON

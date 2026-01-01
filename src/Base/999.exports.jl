@@ -18,7 +18,9 @@ export DevNullTapeSegment
 
 export LiteRecord
 export CanonicalRecord
+export MaskedCanonicalRecord
 export TaraSONRecord
 export tk_lite_record
 export tk_canonical_record
+export tk_masked_record
 export tk_tarason
