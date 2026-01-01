@@ -14,13 +14,14 @@ export AbstractStaticSegPrefix
 export AbstractDynamicSegTail
 export DevNullTapeSegment
 
-### LiteRecord
-
+### Types
 export LiteRecord
 export CanonicalRecord
-export MaskedCanonicalRecord
-export TaraSONRecord
+export HashedRecord
+export HashedTaraSON
+
+## constructors
 export tk_lite_record
 export tk_canonical_record
-export tk_masked_record
-export tk_tarason
+export tk_hashed_record
+export tk_hashed_tarason

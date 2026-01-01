@@ -106,47 +106,9 @@ function tk_canonical_record(literec::LiteRecord)
     canon = LittleDict{String, TaraSONPrimitive}()
     flattened_data = _tk_unsafe_canonical_flatdict(literec, canon)
 
-    if !haskey(flattened_data, "content_hash")
-        push!(flattened_data, "content_hash" => "")
-    end
-
     canon_record = CanonicalRecord(
         flattened_data
     )
 
     return canon_record
-end
-
-# Object correctness assumed
-# Intended for literal (keys, values)
-# like JSON.json("/key")
-_tk_canonical_literal_stringify(x) = JSON.json(x)
-
-# Object correctness assumed
-# MEANING: turn a canonical dict into one JSON line
-function _tk_unsafe_canonical_stringify(canon::CanonicalTKDict)
-    elms = String[]
-    for (k, v) in pairs(canon)
-        k = _tk_canonical_literal_stringify(k)
-        v = _tk_canonical_literal_stringify(v)
-        p = string(k, ":", v)
-        push!(elms, p)
-    end
-    return string("{", join(elms, ","), "}")
-end
-
-# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
-# MARK: Masked
-
-# Canonical record assumed
-export tk_masked_record
-function tk_masked_record(canonical::CanonicalRecord)
-
-    canonical.data["content_hash"] = ""
-
-    masked_record = MaskedCanonicalRecord(
-        canonical.data
-    )
-
-    return masked_record
 end

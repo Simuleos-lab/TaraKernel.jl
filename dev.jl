@@ -47,33 +47,25 @@ let
     # - validate liteness
     # - should return a `LiteRecord`
     # - This is already read only
-    dyn = tk_lite_record(raw3)::LiteRecord
+    lite_record = tk_lite_record(raw3)::LiteRecord
 
     # cannonize
     # - return a `CanonicalRecord`
-    canon = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
+    canonical_record = tk_canonical_record(lite_record::LiteRecord)::CanonicalRecord
     
     # println(JSON.json(canon; pretty=true))
     
-    # masked TaraSON
-    # - return a MaskedCanonicalRecord
+    # Hashed Record
+    # - compute the hash of the masked TaraSON
+    # - add the hash to the record
+    hashed_record = tk_hashed_record(canonical_record::CanonicalRecord)::HashedRecord
+    
+    # hashed TaraSON
+    # - return a HashedTaraSON
     #   - just a wrapper around a TaraSON string
-    masked = tk_masked_record(canon::CanonicalRecord)::MaskedCanonicalRecord
+    hashed_tarason = tk_hashed_tarason(hashed_record::HashedRecord)::HashedTaraSON
     
-    # Serialize to TaraSON
-    # - return a TaraSONRecord
-    #   - just a wrapper around a TaraSON string
-    #   - NOTE: compute parsed object just on demand
-    tarason = tk_tarason(masked::MaskedCanonicalRecord)::TaraSONRecord
-    
-    println(tarason.data)
-    
-    # # hashed TaraSON
-    # # - compute the hash of the masked TaraSON
-    # # - replace the mask with the hash
-    # # - return a HashedTaraSON
-    # #   - just a wrapper around a TaraSON string
-    # hashed = tk_hashed_tarason(masked::MaskedTaraSON)::HashedTaraSON
+    println(hashed_tarason.data)
 
     # # append (stage)
     # # append the HashedTaraSON to the tape

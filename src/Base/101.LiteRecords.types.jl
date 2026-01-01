@@ -60,12 +60,12 @@ struct CanonicalRecord <: AbstractCanonicalTaraRecord
     data::SortedDict{String, Union{Nothing, TaraSONPrimitive}}
 end
 
-export MaskedCanonicalRecord
-struct MaskedCanonicalRecord <: AbstractCanonicalTaraRecord
+export HashedRecord
+struct HashedRecord <: AbstractCanonicalTaraRecord
     data::SortedDict{String, Union{Nothing, TaraSONPrimitive}}
 end
 
-export TaraSONRecord
-struct TaraSONRecord <: AbstractTaraSONRecord
+export HashedTaraSON
+struct HashedTaraSON <: AbstractTaraSONRecord
     data::String
 end
