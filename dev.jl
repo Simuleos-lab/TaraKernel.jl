@@ -68,17 +68,17 @@ let
     println(hashed_tarason.data)
 
     # append (stage)
-    # append the HashedTaraSON to the tape
-    tape = Tape("shhh_mother_is_sleeping")
-    tk_append!(tape::Tape, hashed::HashedTaraSON)
+    # append the HashedTaraSON to a new tape
+    tape = Tape()
+    tk_append!(tape::Tape, hashed_tarason::HashedTaraSON)
 
     println(tape)
     
-    # # commit (stage)
-    # # compute the tape hashes
-    # # create a `CommitRecord`
-    # # append the `CommitRecord`
-    # tk_commit!(tape::Tape)::CommitRecord
+    # commit (stage)
+    # compute the tape hashes
+    # create a `CommitRecord`
+    # append the `CommitRecord`
+    tk_commit!(tape::Tape)::CommitRecord
     
     # # write to Storage Backend 
     # # check tape is commited

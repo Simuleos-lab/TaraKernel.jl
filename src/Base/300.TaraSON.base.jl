@@ -20,7 +20,8 @@ export tk_hashed_tarason
 function tk_hashed_tarason(hashed_record::HashedRecord)
     
     hashed_tarason = HashedTaraSON(
-        _tk_unsafe_canonical_stringify(hashed_record.data)
+        _tk_unsafe_canonical_stringify(hashed_record.data),
+        hashed_record.data["/__Tara/record.hash/sha256"]
     )
 
     return hashed_tarason

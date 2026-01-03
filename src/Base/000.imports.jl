@@ -14,4 +14,5 @@ import OrderedCollections
 import DataStructures
 
 const LittleDict = OrderedCollections.LittleDict
+const OrderedDict = OrderedCollections.OrderedDict
 const SortedDict = DataStructures.SortedDict

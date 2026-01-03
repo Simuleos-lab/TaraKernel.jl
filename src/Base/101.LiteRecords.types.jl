@@ -68,4 +68,10 @@ end
 export HashedTaraSON
 struct HashedTaraSON <: AbstractTaraSONRecord
     data::String
+    hash::String
+end
+
+export CommitRecord
+struct CommitRecord <: AbstractCanonicalTaraRecord
+    data::OrderedDict{String, String}
 end

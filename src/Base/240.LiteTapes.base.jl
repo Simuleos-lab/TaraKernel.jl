@@ -7,34 +7,37 @@
 # .-.--..-.--.-.-..--.-.-.-..-- - -.- -.- .- -
 # MARK: TaraKernel Base
 
-export tk_new_tape
-function tk_new_tape(id::String)
-    tape = Tape(
-        id,
-        Vector(undef, 0)
-    )
-    return tape
-end
-
-
 export tk_append!
-function tk_append!(tape::Tape, hashed_record::HashedTaraSON)
-    push!(tape.data, hashed_record)
+function tk_append!(tape::Tape, rec::HashedTaraSON)
+
+    push!(
+        tape.data, 
+        rec.hash => rec.data
+    )
+
     return tape
 end
 
 
+# compute commit hash from record hashes
+# create commit record
+# append commit record
+function tk_commit!(tape::Tape)
 
-# canonize record
-# rehash canon record
-# push! record into segment
-# record data must be copied
-function tk_commit_record!(
-    seg::AbstractTapeSegment, 
-    dym::AbstractTaraRecord;
-    kwargs...
-)
-    error("Non implemented")
+    str = ""
+
+    for key in keys(tape.data)
+        str = string(str, key)  # concatenate all previous record hashes
+    end
+
+    commit_hash = string("sha256:", bytes2hex(SHA.sha256(str)))
+
+    push!(
+        tape.data,
+        commit_hash => commit_hash
+    )
+
+    return tape
 end
 
 # .-.--..-.--.-.-..--.-.-.-..-- - -.- -.- .- -

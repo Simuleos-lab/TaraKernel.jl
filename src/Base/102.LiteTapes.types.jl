@@ -19,7 +19,6 @@ struct DevNullLiteTape <: AbstractLiteTape end
 struct DevNullTapeSegment <: AbstractTapeSegment end
 
 export Tape
-struct Tape <: AbstractLiteTape
-    id::String
-    data::Vector{HashedTaraSON}
+struct Tape <: AbstractCanonicalTaraRecord
+    data::OrderedDict{String, Union{Nothing, HashedTaraSON}}
 end
