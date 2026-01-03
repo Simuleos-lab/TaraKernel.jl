@@ -5,7 +5,25 @@
 # TODO: make its own file
 
 # .-.--..-.--.-.-..--.-.-.-..-- - -.- -.- .- -
-# MARK: TaraKernel Base 
+# MARK: TaraKernel Base
+
+export tk_new_tape
+function tk_new_tape(id::String)
+    tape = Tape(
+        id,
+        Vector(undef, 0)
+    )
+    return tape
+end
+
+
+export tk_append!
+function tk_append!(tape::Tape, hashed_record::HashedTaraSON)
+    push!(tape.data, hashed_record)
+    return tape
+end
+
+
 
 # canonize record
 # rehash canon record

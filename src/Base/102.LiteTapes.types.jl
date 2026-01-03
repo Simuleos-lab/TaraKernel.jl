@@ -18,3 +18,8 @@ struct DevNullLiteTape <: AbstractLiteTape end
 
 struct DevNullTapeSegment <: AbstractTapeSegment end
 
+export Tape
+struct Tape <: AbstractLiteTape
+    id::String
+    data::Vector{HashedTaraSON}
+end

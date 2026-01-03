@@ -13,7 +13,7 @@ end
 
 # Note: This is a draft, it is expected to change
 
-# Types are garanty of validation
+# Types are garantees of validation
 # I mean, functions should only validate data on type creation
 # for instance, is ok to assume a `LiteRecord` lite after its creation
 
@@ -67,10 +67,12 @@ let
     
     println(hashed_tarason.data)
 
-    # # append (stage)
-    # # append the HashedTaraSON to the tape
-    # tape = tk_new_tape("id_of_tape")::Tape
-    # tk_append!(tape::Tape, hashed::HashedTaraSON)
+    # append (stage)
+    # append the HashedTaraSON to the tape
+    tape = Tape("shhh_mother_is_sleeping")
+    tk_append!(tape::Tape, hashed::HashedTaraSON)
+
+    println(tape)
     
     # # commit (stage)
     # # compute the tape hashes
