@@ -28,8 +28,9 @@ module Base
     include("241.LiteTapes.hashing.jl")
     include("242.LiteTapes.canonical.repr.jl")
     include("260.LiteTapeLibs.base.jl")
+    include("300.TaraSON.base.jl")
     include("900.utils.jl")
     include("901.utils.jsonpointer.jl")
-    include("999.exports.jl")
+    # include("999.exports.jl")
 
 end

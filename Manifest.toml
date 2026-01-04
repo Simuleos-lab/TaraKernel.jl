@@ -2,7 +2,13 @@
 
 julia_version = "1.11.1"
 manifest_format = "2.0"
-project_hash = "228db12d0896818dcd3c5c6bffa771e81dc03d3a"
+project_hash = "b342120a277362860aa756ac864bcfbae5814281"
+
+[[deps.DataStructures]]
+deps = ["OrderedCollections"]
+git-tree-sha1 = "e357641bb3e0638d353c4b29ea0e40ea644066a6"
+uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+version = "0.19.3"
 
 [[deps.Dates]]
 deps = ["Printf"]

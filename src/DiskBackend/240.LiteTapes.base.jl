@@ -13,8 +13,8 @@ TapeSegment(tape::LiteTape, name::String) =
 ## - . .--. .- .--.-.- .--. - .- .- -.. -.-
 # MARK: Attach
 
-import TaraKernel.Base.tk_commit_record!
-function TaraKernel.Base.tk_commit_record!(
+import TaraKernel.Base.tk_commit!
+function TaraKernel.Base.tk_commit!(
         seg::TapeSegment, 
         rec::DynamicLiteRecord
     )

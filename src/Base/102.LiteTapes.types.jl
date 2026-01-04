@@ -18,3 +18,8 @@ struct DevNullLiteTape <: AbstractLiteTape end
 
 struct DevNullTapeSegment <: AbstractTapeSegment end
 
+export Tape
+struct Tape <: AbstractCanonicalTaraRecord
+    data::OrderedDict{String, Union{HashedTaraSON, CommitRecord}}
+    Tape() = new(OrderedDict{String, Union{HashedTaraSON, CommitRecord}}())
+end
