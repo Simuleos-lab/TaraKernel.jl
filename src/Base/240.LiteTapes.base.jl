@@ -12,7 +12,7 @@ function tk_append!(tape::Tape, rec::HashedTaraSON)
 
     push!(
         tape.data, 
-        rec.hash => rec.data
+        rec.hash => rec
     )
 
     return tape
@@ -22,6 +22,7 @@ end
 # compute commit hash from record hashes
 # create commit record
 # append commit record
+export tk_commit!
 function tk_commit!(tape::Tape)
 
     str = ""
@@ -32,12 +33,16 @@ function tk_commit!(tape::Tape)
 
     commit_hash = string("sha256:", bytes2hex(SHA.sha256(str)))
 
-    push!(
-        tape.data,
-        commit_hash => commit_hash
+    commit_record = CommitRecord(
+        OrderedDict{String, String}(commit_hash => commit_hash)
     )
 
-    return tape
+    push!(
+        tape.data,
+        commit_hash => commit_record
+    )
+
+    return commit_record
 end
 
 # .-.--..-.--.-.-..--.-.-.-..-- - -.- -.- .- -

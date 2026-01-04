@@ -19,6 +19,7 @@ export LiteRecord
 export CanonicalRecord
 export HashedRecord
 export HashedTaraSON
+export CommitRecord
 export Tape
 
 ## constructors
@@ -30,3 +31,4 @@ export tk_new_tape
 
 ## tape operations
 export tk_append!
+export tk_commit!
