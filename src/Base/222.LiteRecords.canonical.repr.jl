@@ -1,5 +1,8 @@
 # Here we will implement the canonical representation interface
 
+# ..-.--. -. -.-. -. .-.- .---.-.-.- -- - -- ..- .- .-.- 
+# MARK: Canonical
+
 # Assume liteness
 
 function __flatten_col!(
@@ -93,7 +96,7 @@ function _tk_unsafe_canonical_flatdict(
         pathbuff::Vector{String} = String[]
     )
     __flatten_col!(canon, literec.data, pathbuff, false)
-    sort!(canon)
+    _tk_ensure_shallow(canon)
     return canon
 end
 
@@ -104,27 +107,8 @@ function tk_canonical_record(literec::LiteRecord)
     flattened_data = _tk_unsafe_canonical_flatdict(literec, canon)
 
     canon_record = CanonicalRecord(
-        data = flattened_data,
-        metadata = Dict()
+        flattened_data
     )
 
     return canon_record
-end
-
-# Object correctness assumed
-# Intended for literal (keys, values)
-# like JSON.json("/key")
-_tk_canonical_literal_stringify(x) = JSON.json(x)
-
-# Object correctness assumed
-# MEANING: turn a canonical dict into one JSON line
-function _tk_unsafe_canonical_stringify(canon::CanonicalTKDict)
-    elms = String[]
-    for (k, v) in pairs(canon)
-        k = _tk_canonical_literal_stringify(k)
-        v = _tk_canonical_literal_stringify(v)
-        p = string(k, ":", v)
-        push!(elms, p)
-    end
-    return string("{", join(elms, ","), "}")
 end

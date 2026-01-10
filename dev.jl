@@ -13,7 +13,7 @@ end
 
 # Note: This is a draft, it is expected to change
 
-# Types are garanty of validation
+# Types are garantees of validation
 # I mean, functions should only validate data on type creation
 # for instance, is ok to assume a `LiteRecord` lite after its creation
 
@@ -35,47 +35,50 @@ let
         "B" => [1,2,3]
     )
 
+    raw3 = Dict{String, Any}(
+        "A" => 1, 
+        "B" => Dict{String, Any}(
+            "A" => 1, 
+            "B" => [1,2,3]
+        )
+    )
+
     # Move to TaraKernel type
     # - validate liteness
     # - should return a `LiteRecord`
     # - This is already read only
-    dyn = tk_lite_record(raw2, 2)::LiteRecord
+    lite_record = tk_lite_record(raw3)::LiteRecord
 
-    @show dyn
-    
     # cannonize
     # - return a `CanonicalRecord`
-    can = tk_canonical_record(dyn::LiteRecord)::CanonicalRecord
+    canonical_record = tk_canonical_record(lite_record::LiteRecord)::CanonicalRecord
     
-    # # Serialize to TaraSON
-
-    # # - return a TaraSONRecord
-    # #   - just a wrapper around a TaraSON string
-    # #   - NOTE: compute parsed object just on demand
-    # tarason = tk_tarason(can::CanonicalRecord)::TaraSONRecord
-
-    # # masked TaraSON
-    # # - return a MaskedTaraSON
-    # #   - just a wrapper around a TaraSON string
-    # masked = tk_masked_tarason(tarason::TaraSONRecord)::MaskedTaraSON
+    # println(JSON.json(canon; pretty=true))
     
-    # # hashed TaraSON
-    # # - compute the hash of the masked TaraSON
-    # # - replace the mask with the hash
-    # # - return a HashedTaraSON
-    # #   - just a wrapper around a TaraSON string
-    # hashed = tk_hashed_tarason(masked::MaskedTaraSON)::HashedTaraSON
-
-    # # append (stage)
-    # # append the HashedTaraSON to the tape
-    # tape = tk_new_tape("id_of_tape")::Tape
-    # tk_append!(tape::Tape, hashed::HashedTaraSON)
+    # Hashed Record
+    # - compute the hash of the masked TaraSON
+    # - add the hash to the record
+    hashed_record = tk_hashed_record(canonical_record::CanonicalRecord)::HashedRecord
     
-    # # commit (stage)
-    # # compute the tape hashes
-    # # create a `CommitRecord`
-    # # append the `CommitRecord`
-    # tk_commit!(tape::Tape)::CommitRecord
+    # hashed TaraSON
+    # - return a HashedTaraSON
+    #   - just a wrapper around a TaraSON string
+    hashed_tarason = tk_hashed_tarason(hashed_record::HashedRecord)::HashedTaraSON
+    
+    println(hashed_tarason.data)
+
+    # append (stage)
+    # append the HashedTaraSON to a new tape
+    tape = Tape()
+    tk_append!(tape::Tape, hashed_tarason::HashedTaraSON)
+
+    println(tape)
+    
+    # commit (stage)
+    # compute the tape hashes
+    # create a `CommitRecord`
+    # append the `CommitRecord`
+    tk_commit!(tape::Tape)::CommitRecord
     
     # # write to Storage Backend 
     # # check tape is commited
